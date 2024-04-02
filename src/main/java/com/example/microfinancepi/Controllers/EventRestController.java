@@ -7,57 +7,96 @@ import com.example.microfinancepi.repositories.UserRepository;
 import com.example.microfinancepi.services.EmailSenderService;
 import com.example.microfinancepi.services.EventService;
 import com.example.microfinancepi.services.ShareHolderService;
-import com.example.microfinancepi.services.ShareHolderServiceImpl;
+import com.example.microfinancepi.services.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import com.example.microfinancepi.entities.ShareHolder;
 
+import javax.mail.MessagingException;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @AllArgsConstructor
+
+@SecurityRequirement(name = "bearerAuth")
 @RequestMapping("/Event")
 public class EventRestController {
     private ShareHolderService shareHolderService;
     private EventService eventService;
-    @Autowired
     private EmailSenderService emailSenderService;
-    @Autowired
-    private IEventRepository iEventRepository;
-    @Autowired
-    private UserRepository userRepository;
 
-    @PostMapping("/add")
-    Event addEvent(@RequestBody Event event){
-        return eventService.AddEvent(event);
+    private IEventRepository iEventRepository;
+
+    private UserRepository userRepository;
+    UserService userService;
+
+
+
+
+   @PreAuthorize("hasAuthority('ADMIN')")
+   @PostMapping("/add")
+   public Event addEvent(@RequestBody Event event, Authentication authentication){
+      User authenticatedUser = (User) authentication.getPrincipal();
+
+        return eventService.AddEvent(event,authenticatedUser);
     }
+    @PreAuthorize("hasAuthority('ADMIN')")
+   @PostMapping("/create-and-assign")
+    public ResponseEntity<String> createEventAndAssignUser(@Valid @RequestBody Event event, Authentication authentication) {
+        // Vérifier si la date de l'événement est dans le futur ou aujourd'hui
+        if (event.getDateEvent().isBefore(LocalDate.now())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("La date de l'événement doit être aujourd'hui ou dans le futur.");
+        }
+
+        // Continuer avec la création et l'attribution de l'événement
+        User authenticatedUser = (User) authentication.getPrincipal();
+        eventService.addEvent(event, authenticatedUser);
+
+        // Retourner une réponse réussie
+        return ResponseEntity.ok("L'événement a été créé et attribué avec succès.");
+    }
+
+
     @GetMapping("/all")
     List<Event> retrieveAllEvents(){
 
         return eventService.retrieveAllEvents();
     }
     @GetMapping("/get/{id}")
-    Event retrieveEvent(@PathVariable("id") Integer IdEvent){
-        return eventService.retrieveEvent(IdEvent);
+    @PreAuthorize("hasAuthority('ADMIN')")
+    Event retrieveEvent(@PathVariable("id") Integer IdEvent, Authentication authentication){
+        User authenticatedUser = (User) authentication.getPrincipal();
+        return eventService.retrieveEvent(IdEvent,authenticatedUser );
     }
     @DeleteMapping("/delete/{id}")
-    void RemoveEvent(@PathVariable("id") Integer IdEvent){
-        eventService.removeEvent(IdEvent);
+    @PreAuthorize("hasAuthority('ADMIN')")
+    void RemoveEvent(@PathVariable("id") Integer IdEvent, Authentication authentication){
+        User authenticatedUser = (User) authentication.getPrincipal();
+        eventService.removeEvent(IdEvent,authenticatedUser);
     }
     @PutMapping ("/update")
-    Event updateEvent(@RequestBody Event event){
-        return eventService.updateEvent(event);
+    @PreAuthorize("hasAuthority('ADMIN')")
+    Event updateEvent(@RequestBody Event event, Authentication authentication){
+        User authenticatedUser = (User) authentication.getPrincipal();
+        return eventService.updateEvent(event,authenticatedUser);
     }
     @GetMapping("/getEventByShareholder/{nom}/{prenom}")
-    List<Event> getEventByShareholder(@PathVariable("nom") String Firstname,@PathVariable("prenom") String Lastname) {
-        return eventService.findByShareHolders_LastNameShareholderAndShareHolders_FirstNameShareholder(Lastname, Firstname);
+    @PreAuthorize("hasAuthority('ADMIN')")
+    List<Event> getEventByShareholder(@PathVariable("nom") String Firstname,@PathVariable("prenom") String Lastname, Authentication authentication) {
+        User authenticatedUser = (User) authentication.getPrincipal();
+        return eventService.findByShareHolders_LastNameShareholderAndShareHolders_FirstNameShareholder(Lastname, Firstname,authenticatedUser);
     }
 
     @GetMapping("/{eventId}/totalInvestment")
@@ -65,33 +104,22 @@ public class EventRestController {
         Double totalInvestment = eventService.getTotalInvestmentInEvent(eventId);
         return ResponseEntity.ok(totalInvestment);
     }
-    /* @PostMapping("/{eventId}/send-reminder-emails")
-     public ResponseEntity<?> sendEventReminderEmails(@PathVariable int eventId) {
-         eventService.sendEventReminderEmail(eventId);
-         return ResponseEntity.ok().build();
-     }*/
-   // @Scheduled(fixedRate = 60 * 60 * 1000) // exécute toutes les heures
-    // @Scheduled(cron="*/30 * * * * *")
-   /* public void sendEventReminderEmails() {
-        List<Event> events = eventService.getEventsWithin24Hours();
-        for (Event event : events) {
-            emailSenderService.sendSimpleEmail("samar.saidana@esprit.tn"," Bonjour Ceci est un rappel pour l'événement "+ event.getNameEvent() +"  qui aura lieu dans 24 heures." +"\n\n"+"Cordialement,L'équipe de microfinance.","reminder event "+event.getNameEvent());
-        }
-    }*/
-    @GetMapping("/getEventByUser/{id}")
-    @Transactional
-    public List<Event> ShowEventByActivitySector(@PathVariable("id") Integer iduser) {
-        return eventService.ShowEventByActivitySector(iduser);
-    }
+
     @GetMapping("/getArchive")
     public List<Event> getArchive(){
         return eventService.getArchiveEvent();
     }
-    @PostMapping("/events/{eventId}/like")
-    public void likeEvent(@PathVariable int eventId) {
+    @PreAuthorize("hasAnyAuthority('SHAREHOLDER','CUSTOMER','AGENT','INVESTOR')")
+    @PostMapping("/events/{eventName}/like")
+    public void likeEvent(@PathVariable String eventName, Authentication authentication) {
+        User authenticatedUser = (User) authentication.getPrincipal();
         // Trouvez l'événement correspondant dans la base de données
-        Event event = iEventRepository.findById(eventId)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
+        Event event = iEventRepository.findByEventName(eventName);
+
+        // Vérifier si l'événement a été trouvé
+        if (event == null) {
+            throw new RuntimeException("Event not found");
+        }
 
         // Incrémenter le nombre de "likes" pour l'événement
         event.setLikes(event.getLikes() + 1);
@@ -99,11 +127,18 @@ public class EventRestController {
         // Enregistrez les modifications de l'événement dans la base de données
         iEventRepository.save(event);
     }
-    @PostMapping("/events/{eventId}/dislike")
-    public void dislikeEvent(@PathVariable int eventId) {
-        // Trouvez l'événement correspondant dans la base de données
-        Event event = iEventRepository.findById(eventId)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
+    @PostMapping("/events/{eventName}/dislike")
+    @PreAuthorize("hasAnyAuthority('SHAREHOLDER','CUSTOMER','AGENT','INVESTOR')")
+    public void dislikeEvent(@PathVariable String eventName, Authentication authentication) {
+        User authenticatedUser = (User) authentication.getPrincipal();
+        // Trouver l'événement correspondant dans la base de données par son nom
+        Event event = iEventRepository.findByEventName(eventName);
+
+        // Vérifier si l'événement a été trouvé
+        if (event == null) {
+            throw new RuntimeException("Event not found");
+        }
+
 
         // Incrémenter le nombre de "dislikes" pour l'événement
         event.setDislikes(event.getDislikes() + 1);
@@ -132,7 +167,7 @@ public class EventRestController {
         }
     }
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    public class ResourceNotFoundException extends RuntimeException {
+     class ResourceNotFoundException extends RuntimeException {
         public ResourceNotFoundException(String message) {
             super(message);
         }
@@ -142,10 +177,39 @@ public class EventRestController {
         Optional<Event> optionalEvent = iEventRepository.findById(eventId);
         if (optionalEvent.isPresent()) {
             Event event = optionalEvent.get();
+
+            // Récupérer tous les actionnaires affectés à cet événement
+            List<ShareHolder> shareholders = event.getShareHolders();
+
+            // Supprimer toutes les entrées associées dans la table event_user_set
+            event.getUserSet().clear();
+
+            // Annuler l'événement
             event.cancelEvent();
+
+            // Enregistrer les modifications de l'événement dans la base de données
+            iEventRepository.save(event);
+
+            // Supprimer l'événement de la base de données
             iEventRepository.delete(event);
-            //emailSenderService.sendSimpleEmail("samar.saidana@esprit.tn"," Bonjour Ceci est une annulation  pour l'événement "+ event.getNameEvent() +"  qui aura lieu le "+ event.getDateEvent() +"\n\n"+"Cordialement,L'équipe de microfinance.","reminder event "+event.getNameEvent());
-            return ResponseEntity.ok("Event has been cancelled successfully");
+
+            // Parcourir tous les actionnaires et leur envoyer un e-mail
+            for (ShareHolder shareholder : shareholders) {
+                String shareHolderEmail = shareholder.getEmail(); // Supposons que vous avez un getter pour l'e-mail dans la classe Shareholder
+
+                // Envoyer l'e-mail à l'adresse de l'actionnaire
+                String subject = "Cancellation of the event";
+                String message = "Dear shareholder, the event " + event.getNameEvent() + " has been cancelled.";
+                try {
+                    emailSenderService.sendEmail(shareHolderEmail, subject, message);
+                } catch (MessagingException e) {
+                    // Gérer l'exception si l'envoi d'e-mail échoue
+                    e.printStackTrace();
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send email to shareholder.");
+                }
+            }
+
+            return ResponseEntity.ok("Event has been cancelled successfully and emails have been sent to shareholders.");
         } else {
             throw new ResourceNotFoundException("Event not found with id " + eventId);
         }
@@ -155,20 +219,36 @@ public class EventRestController {
         Optional<Event> optionalEvent = iEventRepository.findById(eventId);
         if (optionalEvent.isPresent()) {
             Event event = optionalEvent.get();
+
+            // Annuler l'événement
             event.cancelEvent();
-            event.setDateEvent(event.getDateEvent().plusDays(10));
+
+            // Reporter l'événement de 7 jours
+            event.setDateEvent(event.getDateEvent().plusDays(7));
+
+            // Enregistrer les modifications de l'événement dans la base de données
             iEventRepository.save(event);
-            //emailSenderService.sendSimpleEmail("samar.saidana@esprit.tn"," Bonjour Ceci est une reportation  pour l'événement  "+ event.getNameEvent() +"  qui sera reporte pour le "+ event.getDateEvent() +"\n\n"+"Cordialement,L'équipe de microfinance.","reminder event "+event.getNameEvent());
+
+            // Récupérer les actionnaires associés à l'événement
+            List<ShareHolder> shareholders = event.getShareHolders();
+
+            // Envoyer un e-mail à chaque actionnaire
+            String subject = "Event Report";
+            String message = "Dear Shareholder,\n\nThe event " + event.getNameEvent() + " has been reported and will now take place on " + event.getDateEvent() + ".\n\nKind regards,\nThe MAWALNY Team";
+            for (ShareHolder shareholder : shareholders) {
+                try {
+                    emailSenderService.sendEmail(shareholder.getEmail(), subject, message);
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send email to shareholders.");
+                }
+            }
+
             return ResponseEntity.ok("Event has been reported successfully");
         } else {
             throw new ResourceNotFoundException("Event not found with id " + eventId);
         }
     }
-    @PutMapping("/assignEventtTouser/{idevent}/{iduser}")
-    Event assignUsertoEvent(@PathVariable("idevent") Integer idevent,@PathVariable("iduser") Integer idIUser){
-        return eventService.assignUserToEvent(idevent,idIUser);
-    }
-
     @GetMapping("/historiquedesEvent/{iduser}")
     public ResponseEntity<List<Event>>  historiqueEvent(@PathVariable("iduser") int userid){
         User user= userRepository.findById(userid).orElse(null);
@@ -182,12 +262,6 @@ public class EventRestController {
         double indiceRentabilite = eventService.calculIndiceRentabilite(idEvent);
         return ResponseEntity.ok(indiceRentabilite);
     }
-   /* @GetMapping("/events/{id}/valeurActuelleNetteAjustee")
-    public ResponseEntity<Double> calculerValeurActuelleNetteAjustee(@PathVariable int id, @RequestParam double tauxRendementExige) {
-        double valeurActuelleNetteAjustee = eventService.calculValeurActuelleNetteAjustee(id, tauxRendementExige);
-        return ResponseEntity.ok(valeurActuelleNetteAjustee);
-    }*/
-
 
     @GetMapping("/eventinfo")
     public ResponseEntity<String> eventInfo() {
@@ -217,6 +291,8 @@ public class EventRestController {
 
         return response;
     }
+
+
 
 }
 

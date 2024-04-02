@@ -5,23 +5,35 @@ import com.example.microfinancepi.repositories.IEventRepository;
 import com.example.microfinancepi.repositories.IShareholderRepository;
 import com.example.microfinancepi.repositories.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+import javax.mail.MessagingException;
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
 @Service
 @AllArgsConstructor
+@Slf4j
 public class EventServiceImpl implements EventService {
 
-    private IEventRepository Ieventrepository;
-    private final IShareholderRepository iShareholderRepository;
-    private final UserRepository userRepository;
+    IEventRepository Ieventrepository;
+    IShareholderRepository iShareholderRepository;
+   UserRepository userRepository;
+   ShareHolderService shareHolderService;
+   EmailSenderService emailSenderService;
+
+
 
 
     @Override
@@ -30,31 +42,81 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Event AddEvent(Event event) {
+    public Event AddEvent(Event event, User authentication) {
+
+        User_role userRole = getCurrentUserRole(authentication);
+
+        if (!userRole.equals(User_role.ADMIN)) {
+            throw new AccessDeniedException("you're not authorized");
+        }
+        Set<User> userSet= new HashSet<>();
+        event.setUserSet(userSet);
         return Ieventrepository.save(event);
     }
+    public void addEvent(Event event, User authentication) {
+        User_role userRole = getCurrentUserRole(authentication);
+        if (!userRole.equals(User_role.ADMIN)) {
+            throw new AccessDeniedException("You're not authorized");
+        } else {
+            if (event == null) {
+                throw new IllegalArgumentException("Invalid input parameter: event is null");
+            }
 
+            // Get the current user's ID from security context
+            String currentUserId = getCurrentUserIdFromSecurityContext();
 
-    @Override
-    public void removeEvent(Integer numEvent) {
-        Ieventrepository.deleteById(numEvent);
+            // Find the user
+            User user = userRepository.findUserByEmail(currentUserId)
+                    .orElseThrow(() -> new IllegalArgumentException("Current user not found"));
+
+            event.getUserSet().add(user);
+
+            // Save the event
+            Event savedEvent = Ieventrepository.save(event);
+        }
     }
 
     @Override
-    public Event retrieveEvent(Integer numEvent) {
+    public void removeEvent(Integer numEvent,User authentication) {
+
+        User_role userRole = getCurrentUserRole(authentication);
+        if (!userRole.equals(User_role.ADMIN)) {
+            throw new AccessDeniedException("You're not authorized");
+        } else {
+            Ieventrepository.deleteById(numEvent);
+        }
+    }
+
+    @Override
+    public Event retrieveEvent(Integer numEvent, User authentication) {
+        User_role userRole = getCurrentUserRole(authentication);
+
+        if (!userRole.equals(User_role.ADMIN)) {
+            throw new AccessDeniedException("you're not authorized");
+        }
         return Ieventrepository.findById(numEvent).orElse(null);
     }
 
     @Override
-    public Event updateEvent(Event event) {
+    public Event updateEvent(Event event,User authentication) {
+        User_role userRole = getCurrentUserRole(authentication);
+
+        if (!userRole.equals(User_role.ADMIN)) {
+            throw new AccessDeniedException("you're not authorized");
+        }
         return Ieventrepository.save(event);
     }
 
     @Override
     @Transactional
-    public List<Event> findByShareHolders_LastNameShareholderAndShareHolders_FirstNameShareholder(String lastNameShareholder, String FirstNameShareholder) {
+    public List<Event> findByShareHolders_LastNameShareholderAndShareHolders_FirstNameShareholder(String lastNameShareholder, String firstNameShareholder,User authentication) {
+        User_role userRole = getCurrentUserRole(authentication);
 
-        return Ieventrepository.findByShareHolders_LastNameShareholderAndShareHolders_FirstNameShareholder(lastNameShareholder, FirstNameShareholder);
+        if (!userRole.equals(User_role.ADMIN)) {
+            throw new AccessDeniedException("you're not authorized");
+        }
+
+        return Ieventrepository.findByShareHolders_LastNameShareholderAndShareHolders_FirstNameShareholder(lastNameShareholder, firstNameShareholder);
     }
 
     @Override
@@ -72,13 +134,12 @@ public class EventServiceImpl implements EventService {
             throw new EntityNotFoundException("Event not found with id " + eventId);
         }
     }
-
     @Override
-    public List<Event> ShowEventByActivitySector(Integer iduser) {
-        User user= userRepository.findById(iduser).get();
-        return Ieventrepository.findByActivitySector(user.getSector_activite());
-
+    public Event getEventById(Integer EventId) {
+        return Ieventrepository.findById(EventId).orElse(null);
     }
+
+
 
 
     @Override
@@ -128,28 +189,33 @@ public class EventServiceImpl implements EventService {
         }
     }
 
-
-
-    @Override
-    public Event assignUserToEvent(int idUser, int idEvent) {
-        Event event=Ieventrepository.findById(idEvent).orElse(null);
-        User user=userRepository.findById(idUser).orElse(null);
-        if(event.getUserSet()==null){
-            Set<User> userSet= new HashSet<>();
-            userSet.add(user);
-            event.setUserSet(userSet);
-        }
-        else{
-            event.getUserSet().add(user);
-        }
-        return  Ieventrepository.save(event);
-
-    }
-
     @Override
     public List<Event> historiqueEvent(int idUser) {
 
         return Ieventrepository.findByUsers_Id(idUser);
+    }
+
+    private User_role getCurrentUserRole(User user) {
+        return user.getRole();
+    }
+
+
+
+    private String getCurrentUserIdFromSecurityContext() {
+        // Get the current authentication object from the security context
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // Check if the authentication object is not null and if the principal is an instance of UserDetails
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            // Cast the principal to UserDetails
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+            // Return the username, which could represent the user's ID
+            return userDetails.getUsername();
+        } else {
+            // If the authentication object is null or the principal is not an instance of UserDetails,
+            return null;
+        }
     }
 
     @Override
@@ -161,9 +227,13 @@ public class EventServiceImpl implements EventService {
         double tauxRendementExige = 10; // taux de rendement exigé de l'investisseur
 
         for (ShareHolder shareHolder : shareHolders) {
+            if (shareHolder.getEvent() == null || shareHolder.getEvent().getDateEvent() == null) {
+                // Ignorer cet actionnaire si la date de l'événement est nulle
+                continue;
+            }
+
             sommeInvestissement += shareHolder.getInvestment();
 
-            // Calcul de la valeur actualisée nette de chaque actionnaire
             LocalDate dateEvent = shareHolder.getEvent().getDateEvent();
             LocalDate now = LocalDate.now();
             int yearsInvestment = now.getYear() - dateEvent.getYear();
@@ -172,36 +242,44 @@ public class EventServiceImpl implements EventService {
             sommeActualisee += valeurActualisee;
         }
 
-        // Calcul de l'indice de rentabilité
-        double indiceRentabilite = sommeActualisee / sommeInvestissement;
-        return indiceRentabilite;
+        // Assurez-vous que sommeInvestissement n'est pas égal à zéro pour éviter une division par zéro
+        if (sommeInvestissement != 0) {
+            // Calcul de l'indice de rentabilité
+            double indiceRentabilite = sommeActualisee / sommeInvestissement;
+            return indiceRentabilite;
+        } else {
+            // Gérer le cas où sommeInvestissement est égal à zéro
+            // Par exemple, vous pouvez renvoyer une valeur par défaut ou lancer une exception
+            return 0; // Valeur par défaut
+        }
+    }
+
+    @Override
+    public void assignshrtoevent(Integer EventId, ShareHolder shareHolder, User authentication) {
+        User_role userRole = getCurrentUserRole(authentication);
+        if (!userRole.equals(User_role.SHAREHOLDER)) {
+            throw new AccessDeniedException("You're not authorized");
+        } else {
+        Event event = getEventById(EventId);
+
+        if (event != null) {
+            shareHolder.setEvent(event);
+            shareHolderService.saveShareHolder(shareHolder);
+        } else {
+            throw new EntityNotFoundException("Event with ID " + EventId + " not found.");
+        }
+    }}
+    public Integer getEventIdByName(String eventName) {
+        Event event = Ieventrepository.findByEventName(eventName);
+        if (event != null) {
+            return event.getIdEvent(); // Retourne l'ID de l'événement si trouvé
+        } else {
+            return null; // Retourne null si l'événement n'est pas trouvé
+        }
     }
 
 
-  /* public double calculValeurActuelleNetteAjustee(int idEvent, double tauxRendementExige) {
-        Event event = Ieventrepository.findById(idEvent).orElse(null);
-        double sommeInvestissement = 0;
-        double sommeActualisee = 0;
-        for (ShareHolder shareHolder : event.getShareHolders()) {
-            sommeInvestissement += shareHolder.getInvestment();
-
-            // Calcul de la valeur actualisée nette de chaque actionnaire
-            LocalDate dateEvent = shareHolder.getEvent().getDateEvent();
-            LocalDate now = LocalDate.now();
-            int yearsInvestment = now.getYear() - dateEvent.getYear();
-            double actualisation = 1 / Math.pow(1 + tauxRendementExige, yearsInvestment);
-            double valeurActualisee = shareHolder.getInvestment() * actualisation;
-            sommeActualisee += valeurActualisee;
-        }
-
-        // Calcul de la valeur actuelle nette ajustée
-        double valeurActuelleNetteAjustee = sommeActualisee - sommeInvestissement;
-        /*if (valeurActuelleNetteAjustee < 0) {
-            valeurActuelleNetteAjustee = 0;
-        }
-        return valeurActuelleNetteAjustee;
-    }*/
-  @Autowired
+    @Override
 
     // Méthode de recommandation pour l'événement avec le plus de likes
     public Event recommendEventByLikes() {
@@ -254,5 +332,48 @@ public class EventServiceImpl implements EventService {
         double percentageWithShareholders = (double) nbEventsWithShareholders / totalEvents * 100.0;
         return percentageWithShareholders;
     }
+    public List<Event> getEventsInTwoDays() {
+        LocalDate today = LocalDate.now();
+        LocalDate twoDaysLater = today.plusDays(2);
+
+        List<Event> allEvents = Ieventrepository.findAll();
+        List<Event> eventsInTwoDays = allEvents.stream()
+                .filter(event -> event.getDateEvent().isAfter(today) && event.getDateEvent().isBefore(twoDaysLater))
+                .collect(Collectors.toList());
+
+        return eventsInTwoDays;
+    }
+    @Scheduled(fixedDelay = 10000)
+    public void sendEventReminders() {
+        // Récupérer la liste des événements prévus dans deux jours
+        List<Event> events = getEventsInTwoDays();
+log.info("nombre d'event : "+ events.size());
+        // Pour chaque événement, envoyer un rappel aux actionnaires
+        for (Event event : events) {
+            log.info(event.getNameEvent());
+            List<ShareHolder> shareholders = event.getShareHolders();
+            for (ShareHolder shareholder : shareholders) {
+                String email = shareholder.getEmail();
+                String subject = "Rappel: Événement dans deux jours";
+                String message = "Cher " + shareholder.getFirstNameShareholder() + ",\n\n"
+                        + "Ceci est un rappel que l'événement '" + event.getNameEvent() + "' se tiendra dans deux jours.\n\n"
+                        + "Date de l'événement: " + event.getDateEvent() + "\n"
+                        //   + "Lieu: " + event.getLocation() + "\n\n"
+                        + "Cordialement,\n"
+                        + "MAWALNY";
+
+                // Envoyer l'e-mail de rappel à l'actionnaire
+                try {
+                    emailSenderService.sendEmail(email, subject, message);
+                } catch (MessagingException e) {
+                    // Gérer l'exception
+                    e.printStackTrace();
+                    // Vous pouvez enregistrer les détails de l'erreur ou prendre une autre action appropriée
+                }
+            }
+        }
+    }
+
+
 
 }

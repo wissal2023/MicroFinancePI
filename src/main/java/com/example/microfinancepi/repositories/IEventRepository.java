@@ -10,8 +10,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IEventRepository extends JpaRepository<Event,Integer> {
-    @Query("select e from Event e inner join e.shareHolders shareHolders where shareHolders.lastNameShareholder = ?1 and shareHolders.FirstNameShareholder = ?2")
-    List<Event> findByShareHolders_LastNameShareholderAndShareHolders_FirstNameShareholder(String lastNameShareholder, String FirstNameShareholder);
+    @Query("SELECT e FROM Event e WHERE e.nameEvent = :eventName")
+    Event findByEventName(@Param("eventName") String eventName);
+
+    @Query("select e from Event e inner join e.shareHolders shareHolders where shareHolders.lastNameShareholder = ?1 and shareHolders.firstNameShareholder = ?2")
+    List<Event> findByShareHolders_LastNameShareholderAndShareHolders_FirstNameShareholder(String lastNameShareholder, String firstNameShareholder);
 
     @Query("SELECT SUM(s.investment) FROM ShareHolder s WHERE s.event.idEvent = :eventId")
     Double findByToltalInvestmentEvent(@Param("eventId") int eventId);
@@ -39,14 +42,6 @@ public interface IEventRepository extends JpaRepository<Event,Integer> {
 
    @Query("SELECT COUNT(e) FROM Event e WHERE e.shareHolders IS EMPTY")
     Long countEventsWithoutShareholders();
-
-  /*  @Query("SELECT e FROM Event e ORDER BY e.shareHolders.size DESC")
-    Event findMostFrequentEvent();
-
-    @Query("SELECT e FROM Event e ORDER BY e.shareHolders.size ASC")
-    Event findLessFrequentEvent();*/
-  //List<ShareHolder> findByEvent_IdEvent(int idEvent);
-
 
 }
 
