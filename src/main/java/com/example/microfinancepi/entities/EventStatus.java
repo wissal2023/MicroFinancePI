@@ -2,7 +2,7 @@ package com.example.microfinancepi.entities;
 
 public enum EventStatus {
 
-        PLANNED, CANCELLED, REPORTED
+        PLANNED, CANCELLED, REPORTED,COMPLETED
     }
 
 

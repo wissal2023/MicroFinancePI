@@ -62,6 +62,7 @@ public class InvestmentServiceImpl implements InvestmentService {
         }
 
 
+
         Float income=amount*0.05f;
         investment.setAmount_inv(amount*0.95f+investment.getAmount_inv());
         Transaction transaction=transactionService.withdraw(userId,amount*0.95f,investment.getOwner_id(), Type_transaction.INVESTMENT);

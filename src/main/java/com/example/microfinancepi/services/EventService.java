@@ -38,6 +38,7 @@ public interface EventService {
 
     List<Event> historiqueEvent(int idUser);
      Event recommendEventByLikes();
+    String getRecommendationResponse();
 
     Event findMostFrequentEvent();
     Event findLessFrequentEvent();

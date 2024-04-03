@@ -4,6 +4,7 @@ import com.example.microfinancepi.entities.Event;
 import com.example.microfinancepi.entities.ShareHolder;
 import com.example.microfinancepi.entities.TypeShareholder;
 import com.example.microfinancepi.entities.User;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -20,6 +21,11 @@ public interface ShareHolderService {
     int getEventYear(ShareHolder shareHolder, User authentication);
 
     ShareHolder findMostFrequentPartner();
+    double calculateInterestRateForShareholderInEvent(int shareholderId, int eventId);
+    double estimateFinancialReturnForShareholderInEvent(int shareholderId, int eventId);
+    ResponseEntity<String> investInEvent(int shareholderId, int eventId);
+    double calculateInterestRateForShareholder(double investment, TypeShareholder type);
+
 
 
     ShareHolder findLessFrequentPartner();

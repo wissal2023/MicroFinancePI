@@ -277,7 +277,15 @@ public class EventServiceImpl implements EventService {
             return null; // Retourne null si l'événement n'est pas trouvé
         }
     }
-
+    @Override
+    public String getRecommendationResponse() {
+        Event recommendedEvent = recommendEventByLikes();
+        if (recommendedEvent != null) {
+            return "The most recommended event is : " + recommendedEvent.getNameEvent();
+        } else {
+            return null;
+        }
+    }
 
     @Override
 
@@ -343,11 +351,11 @@ public class EventServiceImpl implements EventService {
 
         return eventsInTwoDays;
     }
-    @Scheduled(fixedDelay = 10000)
+   // @Scheduled(fixedDelay = 10000)
     public void sendEventReminders() {
         // Récupérer la liste des événements prévus dans deux jours
         List<Event> events = getEventsInTwoDays();
-log.info("nombre d'event : "+ events.size());
+        log.info("nombre d'event : " + events.size());
         // Pour chaque événement, envoyer un rappel aux actionnaires
         for (Event event : events) {
             log.info(event.getNameEvent());
@@ -372,8 +380,7 @@ log.info("nombre d'event : "+ events.size());
                 }
             }
         }
-    }
+    }}
 
 
 
-}

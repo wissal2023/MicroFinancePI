@@ -47,6 +47,17 @@ public class ShareHolder implements Serializable {
     @JsonIgnore
     private Event event;
 
+    public void investInEvent(Event event) {
+        // Vérifiez si le montant d'investissement du shareholder est inférieur ou égal au montant nécessaire pour l'événement
+        if (this.investment <= event.getInvestNeeded()) {
+            // Mettez à jour le montant d'investissement du shareholder
+            this.investment -= event.getInvestNeeded();
+            // Mettez à jour le montant nécessaire pour l'événement
+            event.setInvestNeeded(0);
+        } else {
+            throw new RuntimeException("Investment amount exceeds event balance.");
+        }
+    }
 
 
 }

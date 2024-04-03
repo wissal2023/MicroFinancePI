@@ -7,6 +7,7 @@ import com.example.microfinancepi.services.EmailSenderService;
 import com.example.microfinancepi.services.EventService;
 import com.example.microfinancepi.services.ShareHolderService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,38 +66,6 @@ public class ShareHolderRestController {
         User authenticatedUser = (User) authentication.getPrincipal();
         return shareholderservice.updateShareHolder(shareHolder,authenticatedUser);
     }
-
-    @PostMapping("/assignshrtoevent/{eventName}")
-    @PreAuthorize("hasAuthority('SHAREHOLDER')")
-    public ResponseEntity<String> assignshrtoevent(@RequestBody ShareHolder shareHolder, @PathVariable("eventName") String eventName, Authentication authentication) {
-        User authenticatedUser = (User) authentication.getPrincipal();
-
-        // Récupérer l'ID de l'événement à partir de son nom
-        Integer eventId = eventService.getEventIdByName(eventName);
-
-        if (eventId != null) {
-            // Affecter l'événement au shareholder en utilisant l'ID récupéré
-            eventService.assignshrtoevent(eventId, shareHolder, authenticatedUser);
-
-            // Récupérer l'e-mail du donateur depuis l'entité ShareHolder
-            String shareHolderEmail = shareHolder.getEmail();
-
-            // Envoyer l'e-mail à l'adresse du donateur
-            String subject = "Thank you for your investment";
-            String message = "Dear shareholder, Thank you for your investment in our event " + eventName + ".";
-            try {
-                emailSenderService.sendEmail(shareHolderEmail, subject, message);
-                return ResponseEntity.ok("Shareholder added successfully and email sent.");
-            } catch (MessagingException e) {
-                // Gérer l'exception si l'envoi d'e-mail échoue
-                e.printStackTrace();
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send email to shareholder.");
-            }
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Event with name " + eventName + " not found.");
-        }
-    }
-
 
 
     @PutMapping("/assignshrtoevent/{idShareHolder}/{idEvent}")
@@ -209,17 +178,6 @@ public class ShareHolderRestController {
         return rendement;
     }
 
-/*@GetMapping("/evaluerRisque/{idshareholder}/{duree}")
-    public ResponseEntity<String> evaluerRisque(@PathVariable("id") int idpartenaire, @PathVariable("duree") int duree) {
-        ShareHolder shareholder = Ishareholderrepository.findById(idpartenaire).orElse(null);
-        double rentabilite = calculerRendement( idpartenaire, 0.1);
-
-        if (rentabilite < 0.05 && duree < 12) {
-            return new ResponseEntity<>("Investissement risqué", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Investissement prudent", HttpStatus.OK);
-        }
-    }*/
 @GetMapping("/evaluerRisque/{idshareholder}/{duree}")
 public ResponseEntity<String> evaluerRisque(@PathVariable("idshareholder") int idpartenaire, @PathVariable("duree") int duree) {
     ShareHolder shareholder = Ishareholderrepository.findById(idpartenaire).orElse(null);
@@ -231,6 +189,11 @@ public ResponseEntity<String> evaluerRisque(@PathVariable("idshareholder") int i
         return new ResponseEntity<>("Investissement prudent", HttpStatus.OK);
     }
 }
+
+    @GetMapping("/shareholders/{shareholderId}/event/{eventId}/interest-rate")
+    public double getInterestRateForShareholderInEvent(@PathVariable int shareholderId, @PathVariable int eventId) {
+        return shareholderservice.estimateFinancialReturnForShareholderInEvent( shareholderId,eventId);
+    }
 
 
 

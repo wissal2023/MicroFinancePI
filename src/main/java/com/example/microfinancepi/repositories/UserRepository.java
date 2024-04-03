@@ -1,5 +1,6 @@
 package com.example.microfinancepi.repositories;
 
+import com.example.microfinancepi.entities.TypeShareholder;
 import com.example.microfinancepi.entities.User;
 import com.example.microfinancepi.entities.User_role;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,5 +13,6 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     ///
     Optional<User> findUserByEmail(String username);
     User findByEmail(String email);
+
 
 }

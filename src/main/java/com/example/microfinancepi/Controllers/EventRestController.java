@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import com.example.microfinancepi.entities.ShareHolder;
 
@@ -43,17 +44,16 @@ public class EventRestController {
     UserService userService;
 
 
-
-
-   @PreAuthorize("hasAuthority('ADMIN')")
-   @PostMapping("/add")
-   public Event addEvent(@RequestBody Event event, Authentication authentication){
-      User authenticatedUser = (User) authentication.getPrincipal();
-
-        return eventService.AddEvent(event,authenticatedUser);
-    }
     @PreAuthorize("hasAuthority('ADMIN')")
-   @PostMapping("/create-and-assign")
+    @PostMapping("/add")
+    public Event addEvent(@RequestBody Event event, Authentication authentication) {
+        User authenticatedUser = (User) authentication.getPrincipal();
+
+        return eventService.AddEvent(event, authenticatedUser);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/create-and-assign")
     public ResponseEntity<String> createEventAndAssignUser(@Valid @RequestBody Event event, Authentication authentication) {
         // Vérifier si la date de l'événement est dans le futur ou aujourd'hui
         if (event.getDateEvent().isBefore(LocalDate.now())) {
@@ -70,33 +70,76 @@ public class EventRestController {
 
 
     @GetMapping("/all")
-    List<Event> retrieveAllEvents(){
+    List<Event> retrieveAllEvents() {
 
         return eventService.retrieveAllEvents();
     }
+
     @GetMapping("/get/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    Event retrieveEvent(@PathVariable("id") Integer IdEvent, Authentication authentication){
+    Event retrieveEvent(@PathVariable("id") Integer IdEvent, Authentication authentication) {
         User authenticatedUser = (User) authentication.getPrincipal();
-        return eventService.retrieveEvent(IdEvent,authenticatedUser );
+        return eventService.retrieveEvent(IdEvent, authenticatedUser);
     }
+
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    void RemoveEvent(@PathVariable("id") Integer IdEvent, Authentication authentication){
+    void RemoveEvent(@PathVariable("id") Integer IdEvent, Authentication authentication) {
         User authenticatedUser = (User) authentication.getPrincipal();
-        eventService.removeEvent(IdEvent,authenticatedUser);
+        eventService.removeEvent(IdEvent, authenticatedUser);
     }
-    @PutMapping ("/update")
+
+    @PutMapping("/update")
     @PreAuthorize("hasAuthority('ADMIN')")
-    Event updateEvent(@RequestBody Event event, Authentication authentication){
+    Event updateEvent(@RequestBody Event event, Authentication authentication) {
         User authenticatedUser = (User) authentication.getPrincipal();
-        return eventService.updateEvent(event,authenticatedUser);
+        return eventService.updateEvent(event, authenticatedUser);
     }
+
+    @PostMapping("/assignshrtoevent/{eventName}")
+    @PreAuthorize("hasAuthority('SHAREHOLDER')")
+    public ResponseEntity<String> assignshrtoevent(@RequestBody ShareHolder shareHolder, @PathVariable("eventName") String eventName, Authentication authentication) {
+        User authenticatedUser = (User) authentication.getPrincipal();
+
+        // Récupérer l'ID de l'événement à partir de son nom
+        Integer eventId = eventService.getEventIdByName(eventName);
+
+        if (eventId != null) {
+            Event event = eventService.getEventById(eventId);
+            // Affecter l'événement au shareholder en utilisant l'ID récupéré
+            eventService.assignshrtoevent(eventId, shareHolder, authenticatedUser);
+
+            // Investir dans l'événement
+            shareHolderService.investInEvent(shareHolder.getIdShareholder(), eventId);
+            if (event.getEventStatus() == EventStatus.COMPLETED) {
+                // Si l'événement est terminé, renvoyer un message indiquant que l'investissement n'est pas possible
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot invest in a completed event.");
+            }
+
+            // Récupérer l'e-mail du donateur depuis l'entité ShareHolder
+            String shareHolderEmail = shareHolder.getEmail();
+
+            // Envoyer l'e-mail à l'adresse du donateur
+            String subject = "Thank you for your investment";
+            String message = "Dear shareholder, Thank you for your investment in our event " + eventName + ".";
+            try {
+                emailSenderService.sendEmail(shareHolderEmail, subject, message);
+                return ResponseEntity.ok("Shareholder added successfully and email sent.");
+            } catch (MessagingException e) {
+                // Gérer l'exception si l'envoi d'e-mail échoue
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send email to shareholder.");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Event with name " + eventName + " not found.");
+        }
+    }
+
     @GetMapping("/getEventByShareholder/{nom}/{prenom}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    List<Event> getEventByShareholder(@PathVariable("nom") String Firstname,@PathVariable("prenom") String Lastname, Authentication authentication) {
+    List<Event> getEventByShareholder(@PathVariable("nom") String Firstname, @PathVariable("prenom") String Lastname, Authentication authentication) {
         User authenticatedUser = (User) authentication.getPrincipal();
-        return eventService.findByShareHolders_LastNameShareholderAndShareHolders_FirstNameShareholder(Lastname, Firstname,authenticatedUser);
+        return eventService.findByShareHolders_LastNameShareholderAndShareHolders_FirstNameShareholder(Lastname, Firstname, authenticatedUser);
     }
 
     @GetMapping("/{eventId}/totalInvestment")
@@ -106,9 +149,10 @@ public class EventRestController {
     }
 
     @GetMapping("/getArchive")
-    public List<Event> getArchive(){
+    public List<Event> getArchive() {
         return eventService.getArchiveEvent();
     }
+
     @PreAuthorize("hasAnyAuthority('SHAREHOLDER','CUSTOMER','AGENT','INVESTOR')")
     @PostMapping("/events/{eventName}/like")
     public void likeEvent(@PathVariable String eventName, Authentication authentication) {
@@ -127,6 +171,7 @@ public class EventRestController {
         // Enregistrez les modifications de l'événement dans la base de données
         iEventRepository.save(event);
     }
+
     @PostMapping("/events/{eventName}/dislike")
     @PreAuthorize("hasAnyAuthority('SHAREHOLDER','CUSTOMER','AGENT','INVESTOR')")
     public void dislikeEvent(@PathVariable String eventName, Authentication authentication) {
@@ -146,6 +191,7 @@ public class EventRestController {
         // Enregistrez les modifications de l'événement dans la base de données
         iEventRepository.save(event);
     }
+
     @PostMapping("/{eventId}/like/{shareholderId}")
     public ResponseEntity<String> voteLike(@PathVariable int eventId, @PathVariable int shareholderId) {
         eventService.voteLike(eventId, shareholderId);
@@ -157,6 +203,7 @@ public class EventRestController {
         eventService.voteDislike(eventId, shareholderId);
         return ResponseEntity.ok("Event " + eventId + " disliked by shareholder " + shareholderId);
     }
+
     @GetMapping("/recommend")
     public ResponseEntity<Event> recommendEventByLikes() {
         Event event = eventService.recommendEventByLikes();
@@ -166,12 +213,14 @@ public class EventRestController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
-     class ResourceNotFoundException extends RuntimeException {
+    class ResourceNotFoundException extends RuntimeException {
         public ResourceNotFoundException(String message) {
             super(message);
         }
     }
+
     @PostMapping("/events/{eventId}/cancel")
     public ResponseEntity<String> cancelEvent(@PathVariable int eventId) {
         Optional<Event> optionalEvent = iEventRepository.findById(eventId);
@@ -214,6 +263,7 @@ public class EventRestController {
             throw new ResourceNotFoundException("Event not found with id " + eventId);
         }
     }
+
     @PostMapping("/events/{eventId}/reported")
     public ResponseEntity<String> reportedEvent(@PathVariable int eventId) {
         Optional<Event> optionalEvent = iEventRepository.findById(eventId);
@@ -249,14 +299,16 @@ public class EventRestController {
             throw new ResourceNotFoundException("Event not found with id " + eventId);
         }
     }
+
     @GetMapping("/historiquedesEvent/{iduser}")
-    public ResponseEntity<List<Event>>  historiqueEvent(@PathVariable("iduser") int userid){
-        User user= userRepository.findById(userid).orElse(null);
-        List<Event> offers= eventService.historiqueEvent(userid);
-        String Text1="l'historique des offres de l'utilisateur "+ user.getUser_firstname()+"-"+user.getUser_lastname();
-        return  new ResponseEntity<List<Event>>(offers, HttpStatus.OK);
+    public ResponseEntity<List<Event>> historiqueEvent(@PathVariable("iduser") int userid) {
+        User user = userRepository.findById(userid).orElse(null);
+        List<Event> offers = eventService.historiqueEvent(userid);
+        String Text1 = "l'historique des offres de l'utilisateur " + user.getUser_firstname() + "-" + user.getUser_lastname();
+        return new ResponseEntity<List<Event>>(offers, HttpStatus.OK);
 
     }
+
     @GetMapping("/events/{id}/indice-rentabilite")
     public ResponseEntity<Double> calculIndiceRentabilite(@PathVariable("id") int idEvent) {
         double indiceRentabilite = eventService.calculIndiceRentabilite(idEvent);
@@ -292,8 +344,10 @@ public class EventRestController {
         return response;
     }
 
-
-
+    @GetMapping("/shareholders/{type}/{investmentAmount}/interest-rate")
+    public double getInterestRateForShareholder(@PathVariable TypeShareholder type, @PathVariable double investmentAmount) {
+        return shareHolderService.calculateInterestRateForShareholder(investmentAmount, type);
+    }
 }
 
 
