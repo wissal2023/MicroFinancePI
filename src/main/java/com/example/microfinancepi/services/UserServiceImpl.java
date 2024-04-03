@@ -48,6 +48,10 @@ public class UserServiceImpl implements UserService , UserDetailsService {
         User user=iUserRepository.findById(id).get();
         return user;
     }
+    // Méthode pour récupérer un utilisateur par son adresse e-mail
+    public User getUserByEmail(String email) {
+        return iUserRepository.findByEmail(email);
+    }
     public boolean isCurrentUser(int id) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {

@@ -38,7 +38,7 @@ public class User implements Serializable , UserDetails {
     private String Sector_activite;
     private Float amount;
 
-    @ManyToMany(mappedBy = "userSet")
+    @ManyToMany(mappedBy = "userSet", fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<Event> eventSet;
     @OneToMany(mappedBy = "user")
@@ -51,6 +51,7 @@ public class User implements Serializable , UserDetails {
     @JsonIgnore
     @Transient
     private List<GrantedAuthority> authorities;
+
     @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -68,25 +69,30 @@ public class User implements Serializable , UserDetails {
     public String getUsername() {
         return email;
     }
+
     @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
+
     @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
+
     @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
+
     @JsonIgnore
     @Override
     public boolean isEnabled() {
         return true;
     }
+
 
 }

@@ -14,6 +14,7 @@ public interface UserService {
     void deleteUser(int id);
     User getUserByid(int id);
     boolean isCurrentUser(int id) ;
+    User getUserByEmail(String email);
 
     UserDetails loadUserByUsername(String username);
 }

@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface IShareholderRepository extends JpaRepository<ShareHolder,Integer> {
 
+
     @Query("SELECT s FROM ShareHolder s WHERE s.event.idEvent = :eventId")
     List<ShareHolder> findByEventId(@Param("eventId") int eventId);
 

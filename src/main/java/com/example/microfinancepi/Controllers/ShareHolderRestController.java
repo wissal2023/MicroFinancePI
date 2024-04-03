@@ -3,16 +3,21 @@ package com.example.microfinancepi.Controllers;
 import com.example.microfinancepi.entities.*;
 import com.example.microfinancepi.repositories.IEventRepository;
 import com.example.microfinancepi.repositories.IShareholderRepository;
+import com.example.microfinancepi.services.EmailSenderService;
 import com.example.microfinancepi.services.EventService;
-import com.example.microfinancepi.services.EventServiceImpl;
 import com.example.microfinancepi.services.ShareHolderService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
-import org.apache.commons.math3.analysis.solvers.IllinoisSolver;
-import org.apache.commons.math3.analysis.solvers.UnivariateSolver;
+
+import javax.mail.MessagingException;
+@SecurityRequirement(name = "bearerAuth")
 
 
 @RestController
@@ -23,42 +28,89 @@ public class ShareHolderRestController {
     private ShareHolderService shareholderservice;
     private EventService eventService;
     private IShareholderRepository Ishareholderrepository;
-    private IEventRepository Ieventrepository;
+   // private IEventRepository Ieventrepository;
+    EmailSenderService emailSenderService;
+
     @PostMapping("/add")
-    ShareHolder addShareHolder(@RequestBody ShareHolder shareholder) {
-        return shareholderservice.AddShareHolder(shareholder);
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SHAREHOLDER')")
+    ShareHolder addShareHolder(@RequestBody ShareHolder shareholder, Authentication authentication) {
+        User authenticatedUser = (User) authentication.getPrincipal();
+        return shareholderservice.AddShareHolder(shareholder,authenticatedUser);
     }
 
     @GetMapping("/all")
-    List<ShareHolder> retrieveAllShareHolder() {
-
-        return shareholderservice.retrieveAllShareHolder();
+    @PreAuthorize("hasAuthority('ADMIN')")
+    List<ShareHolder> retrieveAllShareHolder( Authentication authentication) {
+        User authenticatedUser = (User) authentication.getPrincipal();
+        return shareholderservice.retrieveAllShareHolder(authenticatedUser);
     }
 
     @GetMapping("/get/{id}")
-    ShareHolder retrieveShareHolder(@PathVariable("id") Integer IdShareHolder) {
-        return shareholderservice.retrieveShareHolder(IdShareHolder);
+    @PreAuthorize("hasAuthority('ADMIN')")
+    ShareHolder retrieveShareHolder(@PathVariable("id") Integer IdShareHolder,Authentication authentication) {
+        User authenticatedUser = (User) authentication.getPrincipal();
+        return shareholderservice.retrieveShareHolder(IdShareHolder,authenticatedUser);
     }
 
     @DeleteMapping("/delete/{id}")
-    void RemoveShareHolder(@PathVariable("id") Integer IdShareHolder) {
-        shareholderservice.removeShareHolder(IdShareHolder);
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SHAREHOLDER')")
+    void RemoveShareHolder(@PathVariable("id") Integer IdShareHolder,Authentication authentication) {
+        User authenticatedUser = (User) authentication.getPrincipal();
+        shareholderservice.removeShareHolder(IdShareHolder,authenticatedUser);
     }
 
     @PutMapping("/update")
-    ShareHolder updateShareHolder(@RequestBody ShareHolder shareHolder) {
-        return shareholderservice.updateShareHolder(shareHolder);
+    @PreAuthorize("hasAuthority('SHAREHOLDER')")
+    ShareHolder updateShareHolder(@RequestBody ShareHolder shareHolder,Authentication authentication) {
+        User authenticatedUser = (User) authentication.getPrincipal();
+        return shareholderservice.updateShareHolder(shareHolder,authenticatedUser);
     }
 
-    @PutMapping("/assignshrtoevent/{idShareHolder}/{idEvent}")
-    public ShareHolder assignshrtoevent(@PathVariable("idShareHolder") Integer idShareHolder, @PathVariable("idEvent") Integer idEvent) {
-        return shareholderservice.assignShareHolderToEvent(idShareHolder, idEvent);
+    @PostMapping("/assignshrtoevent/{eventName}")
+    @PreAuthorize("hasAuthority('SHAREHOLDER')")
+    public ResponseEntity<String> assignshrtoevent(@RequestBody ShareHolder shareHolder, @PathVariable("eventName") String eventName, Authentication authentication) {
+        User authenticatedUser = (User) authentication.getPrincipal();
+
+        // Récupérer l'ID de l'événement à partir de son nom
+        Integer eventId = eventService.getEventIdByName(eventName);
+
+        if (eventId != null) {
+            // Affecter l'événement au shareholder en utilisant l'ID récupéré
+            eventService.assignshrtoevent(eventId, shareHolder, authenticatedUser);
+
+            // Récupérer l'e-mail du donateur depuis l'entité ShareHolder
+            String shareHolderEmail = shareHolder.getEmail();
+
+            // Envoyer l'e-mail à l'adresse du donateur
+            String subject = "Thank you for your investment";
+            String message = "Dear shareholder, Thank you for your investment in our event " + eventName + ".";
+            try {
+                emailSenderService.sendEmail(shareHolderEmail, subject, message);
+                return ResponseEntity.ok("Shareholder added successfully and email sent.");
+            } catch (MessagingException e) {
+                // Gérer l'exception si l'envoi d'e-mail échoue
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send email to shareholder.");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Event with name " + eventName + " not found.");
+        }
     }
+
+
+
+    @PutMapping("/assignshrtoevent/{idShareHolder}/{idEvent}")
+    public ShareHolder assignshrstoevent(@PathVariable("idShareHolder") Integer idShareHolder, @PathVariable("idEvent") Integer idEvent) {
+        return shareholderservice.assignShareHoldersToEvent(idShareHolder, idEvent);
+    }
+
 
 
     @GetMapping("/shareholders/most-participated")
-    public ResponseEntity<?> getShareholdersParticipatedInMostEvents() {
-        List<ShareHolder> shareholders = shareholderservice.findShareholdersWithMoreThanOneEvent();
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<?> getShareholdersParticipatedInMostEvents(Authentication authentication) {
+        User authenticatedUser = (User) authentication.getPrincipal();
+        List<ShareHolder> shareholders = shareholderservice.findShareholdersWithMoreThanOneEvent(authenticatedUser);
         if (shareholders.isEmpty()) {
             return ResponseEntity.noContent().build();
         } else {
@@ -66,9 +118,11 @@ public class ShareHolderRestController {
         }
     }
     @GetMapping("/shareholders/{id}")
-    public ResponseEntity<ShareHolder> getShareHolder(@PathVariable int id) {
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<ShareHolder> getShareHolder(@PathVariable int id,Authentication authentication) {
+        User authenticatedUser = (User) authentication.getPrincipal();
         ShareHolder shareHolder = Ishareholderrepository.findById(id).orElseThrow(() -> new RuntimeException("ShareHolder not found"));
-        int year = shareholderservice.getEventYear(shareHolder);
+        int year = shareholderservice.getEventYear(shareHolder,authenticatedUser);
         // ...
         return ResponseEntity.ok(shareHolder);
     }
@@ -82,7 +136,7 @@ public class ShareHolderRestController {
         double percentageWithoutEvent = shareholderservice.getPartnersEventPercentages();
         double percentageWithEvent = shareholderservice.getPartnersEventPercentages1();
 
-        // Créer les textes à afficher
+        if (mostFrequent != null && lessFrequent != null) {   // Créer les textes à afficher
         String texte1 = "Le partner le plus fréquent est : ";
         String texte2 = "Le partner le moins fréquent est : ";
         String texte3 = "Les partners qui n'ont pas participé à d'événement : ";
@@ -99,63 +153,16 @@ public class ShareHolderRestController {
                         + "\n\n" + percentageWithoutEvent + texte6 + "\n\n" + percentageWithEvent + texte7);
 
         return response;
+    } else {
+        // Gérer le cas où mostFrequent ou lessFrequent est null
+        // Vous pouvez retourner une réponse différente ou lancer une exception, selon vos besoins
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aucun partenaire trouvé");
+    }
     }
 
-    @GetMapping("/kmeansForDataanalysis")
-    @ResponseBody
-    public KMeans kmeans() {
-        // KMeansPlusPlusInitialiser
-        List<DataPoint> points = new ArrayList<>();
-        List<String> listNameShareholder = new ArrayList<String>();
-        List<Double> listinvestment = new ArrayList<Double>();
 
-        List<ShareHolder> clients = shareholderservice.retrieveAllShareHolder();
-        for (int i = 0; i < clients.size(); i++) {
-            listNameShareholder.add(clients.get(i).getLastNameShareholder());
-        }
-        for (int i = 0; i < clients.size(); i++) {
-            listinvestment.add(clients.get(i).getInvestment());
-        }
 
-        for (int i = 0; i < clients.size(); i++) {
-            points.add(new DataPoint(listinvestment.get(i)));
-        }
-        KMeans kMeans = new KMeans(3, points, new RandomInitialiser());
 
-        return kMeans;
-
-    }
-    @GetMapping("/simpleShareholderViewbyinvestment")
-    @ResponseBody
-
-    public Map<String, String> simpleAgentViewbyUsername() {
-
-        Map<String, String> hash_map = new HashMap<>();
-
-        List<Cluster> listOfClusters = kmeans().getClusters();
-        List<String> listusername = new ArrayList<String>();
-
-        for (int i = 0; i < kmeans().k; i++) {
-            int y = i + 1;
-            String groupe = "Groupe" + y;
-
-            Cluster cluster = listOfClusters.get(i);
-            Set<DataPoint> SetOfPoints = cluster.getDataPoints();
-            List<DataPoint> ListOfPoints = new ArrayList<>(SetOfPoints);
-            int n = ListOfPoints.size();
-            for (int j = 0; j < n; j++) {
-                Double score = ListOfPoints.get(j).getComponents().get(0);
-
-                String username = shareholderservice.findShareHolderByInvestment(score).getLastNameShareholder();
-
-                hash_map.put(username, groupe);
-
-            }
-
-        }
-
-        return hash_map;
-    }
     @GetMapping("/calculTri/{idPartenaire}/{idEvent}")
     public double calculerTRI(@PathVariable("idPartenaire") int idPartenaire, @PathVariable("idEvent") int idEvent) {
         ShareHolder partenaire = Ishareholderrepository.findById(idPartenaire).orElse(null);
@@ -224,6 +231,8 @@ public ResponseEntity<String> evaluerRisque(@PathVariable("idshareholder") int i
         return new ResponseEntity<>("Investissement prudent", HttpStatus.OK);
     }
 }
+
+
 
 
 }
