@@ -51,7 +51,8 @@ public  class TransactionRestController {
     @PostMapping("/withdraw/{user_id}/{rece_id}/{amount}/{type}")
     public Transaction withdraw(@PathVariable("user_id") Integer userId,
                                 @PathVariable("amount") Float amount,
-                                @PathVariable("rece_id") Integer receiverId,@PathVariable("type") Type_transaction type) {
+                                @PathVariable("rece_id") Integer receiverId,
+                                @PathVariable("type") Type_transaction type) {
         return transactionService.withdraw(userId, amount, receiverId,type);
     }
   @GetMapping("/testtype/{id_transaction}")
