@@ -6,6 +6,7 @@ import com.example.microfinancepi.entities.Transaction;
 import com.example.microfinancepi.entities.Type_transaction;
 import com.example.microfinancepi.services.TransactionService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/Transaction")
+@SecurityRequirement(name = "bearerAuth")
 public  class TransactionRestController {
     private TransactionService transactionService;
 
@@ -42,7 +44,7 @@ public  class TransactionRestController {
                                               @PathVariable("id_invest") Integer id_invest){
         return transactionService.assignTransactionToInvestment(id_transaction,id_invest);
     }
-@PutMapping("/assignTrtoUser/{id_transaction}/{id_user}")
+@PutMapping("/assignTrtoUser/{id_user}/{id_transaction}")
     public void assignTransactionToUser(@PathVariable Integer id_transaction, @PathVariable Integer id_user){
         transactionService.assignTransactionToUser(id_transaction,id_user);
     }

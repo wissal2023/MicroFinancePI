@@ -1,9 +1,6 @@
 package com.example.microfinancepi.services;
 
-import com.example.microfinancepi.entities.Investment;
-import com.example.microfinancepi.entities.Transaction;
-import com.example.microfinancepi.entities.Type_transaction;
-import com.example.microfinancepi.entities.User;
+import com.example.microfinancepi.entities.*;
 import com.example.microfinancepi.repositories.IInvestmentRepository;
 import com.example.microfinancepi.repositories.ITransactionRepository;
 import com.example.microfinancepi.repositories.UserRepository;
@@ -64,36 +61,57 @@ public class TransactionServiceImpl implements TransactionService{
        ItransactionRepository.save(transaction);
    }
     @Override
-  public Transaction withdraw(Integer userId, Float amount, Integer receiverId, Type_transaction type){
-      User user = userRepository.findById(userId)
-              .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
-      User receiver = userRepository.findById(receiverId)
-              .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
-      Float userAmount = user.getAmount();
-      Float recAmount=receiver.getAmount();
-      if (user.getAmount() < amount) {
-          throw new IllegalArgumentException("User does not have enough balance to make the transaction");
-      }
-      user.setAmount(userAmount - amount);
+    public Transaction withdraw(Integer userId, Float amount, Integer receiverId, Type_transaction type){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
+        User receiver = userRepository.findById(receiverId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
 
-      receiver.setAmount(recAmount + amount);
-      userRepository.save(receiver);
-      Transaction transaction= new Transaction();
 
-      transaction.setDate_transaction(Calendar.getInstance().getTime());
-      transaction.setValue(amount);
-      transaction.setSender(userId);
-      transaction.setReceiver(receiverId);
-      transaction.setUser(user);
-      transaction.setType(type);
+        Float userAmount = user.getAmount();
+        Float recAmount=receiver.getAmount();
+        if (user.getAmount() < amount) {
+            throw new IllegalArgumentException("User does not have enough balance to make the transaction");
+        }
+        user.setAmount(userAmount - amount);
+
+        receiver.setAmount(recAmount + amount);
+        userRepository.save(receiver);
+
+        User admin = userRepository.findByRole(User_role.ADMIN);
+
+        if (admin == null) {
+            throw new EntityNotFoundException("Admin user not found");
+        }
+        Float transactionFee = calculateTransactionFee(amount);
+        user.setAmount(user.getAmount() - transactionFee);
+
+        Float adminAmount = admin.getAmount();
+        admin.setAmount(adminAmount + transactionFee);
+
+        userRepository.save(admin);
+
+
+        Transaction transaction= new Transaction();
+
+        transaction.setDate_transaction(Calendar.getInstance().getTime());
+        transaction.setValue(amount);
+        transaction.setSender(userId);
+        transaction.setReceiver(receiverId);
+        transaction.setUser(user);
+        transaction.setType(type);
 
         userRepository.save(user);
        /* if (transaction.getType()==Type_transaction.WITHDRAW){
             emailSenderService.sendTransactionEmail("samar.saidana@esprit.tn",user.getEmail_address(),transaction.getValue());
             emailSenderService.receiveTransactionEmail("samar.saidana@esprit.tn",receiver.getEmail_address(),transaction.getValue());
         } */
-return  ItransactionRepository.save(transaction);
-  }
+        return  ItransactionRepository.save(transaction);
+    }
+    private Float calculateTransactionFee(Float transactionAmount) {
+        // Example fee calculation logic (you can adjust as needed)
+        return transactionAmount * 0.05f; // Assuming 5% fee
+    }
     @Override
     public Type_transaction testtr(Integer transactionId){
         Transaction transaction = ItransactionRepository.findById(transactionId)
