@@ -27,9 +27,6 @@ public class RequestLoan implements Serializable {
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Temporal(TemporalType.DATE)//timestamp for the hours
     Date reqDate;
-
-    @Enumerated(EnumType.STRING)
-    StatLoan status;
     @NotBlank
     @Min(value = 0, message = "The interest rate should not be negative")
     Float loanAmnt;
@@ -42,12 +39,19 @@ public class RequestLoan implements Serializable {
     @Lob
     byte[] garantor;
 
+    @Enumerated(EnumType.STRING)
+    StatLoan status;
+    @Enumerated(EnumType.STRING)
+    typeAmort typeAmrt;
+
     //association
-    @JsonIgnore
-    @ManyToMany(mappedBy = "requestloans")
-    Set<OfferLoan> offerloan;
+    @ManyToOne
+    OfferLoan offerLoan;
+
     @OneToOne(cascade = CascadeType.ALL)//affectation
     Amortization amortization;
+}
+
 
     /*
     @ManyToOne
@@ -59,5 +63,3 @@ public class RequestLoan implements Serializable {
     @OneToOne
     private AccOrRef accOrRef;
      */
-
-}

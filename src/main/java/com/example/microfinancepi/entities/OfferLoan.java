@@ -1,5 +1,6 @@
 package com.example.microfinancepi.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -31,9 +32,9 @@ public class OfferLoan implements Serializable {
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     Date offrDate;
-    Float tmm;
+    double tmm = 7.79;// should be in %
     @NotBlank(message = "the amount should be in decimal value")
-    Long maxAmnt;// should be in %
+    Long maxAmnt;
     @NotBlank(message = "the amount should be in decimal value and better than 0")
     Long minAmnt;
     @Min(value = 3, message = "the repayment periode should not be lower than 3 month")
@@ -41,9 +42,10 @@ public class OfferLoan implements Serializable {
     @NotBlank(message = "the interest rate should be grater than the TMM ")
     @Min(value = 0, message = "The interest rate should not be negative")
     Float intRate;
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    Set<RequestLoan> requestloans;
+//association:
+    @JsonIgnore
+    @OneToMany(mappedBy = "offerLoan", cascade = CascadeType.ALL)
+    Set<RequestLoan> requestLoans;
     @ManyToOne
     User user;
 

@@ -27,7 +27,7 @@ import static com.example.microfinancepi.security.SecurityConstants.TOKEN_PREFIX
 public class UserRestController {
     @Autowired
     TokenBlacklistService tokenBlacklistService;
-UserService userService;
+    UserService userService;
     @PostMapping("/addUser")
     public void addUserByForm(@RequestBody User user){
         userService.addUser(user);

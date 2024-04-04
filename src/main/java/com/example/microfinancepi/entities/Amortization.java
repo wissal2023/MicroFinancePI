@@ -4,6 +4,7 @@ package com.example.microfinancepi.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -23,6 +24,8 @@ public class Amortization {
     @NotBlank
     Long periode;
     @NotBlank
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     Date date;
     @NotBlank
     Long startAmount;
@@ -32,9 +35,8 @@ public class Amortization {
     Long amrt;
     @NotBlank
     Long annuity;
-    @Enumerated(EnumType.STRING)
-    typeAmort typeAmrt;
-
+    Long frais;
+    Long agio;
 
     @OneToOne(mappedBy = "amortization")
     @JsonIgnore

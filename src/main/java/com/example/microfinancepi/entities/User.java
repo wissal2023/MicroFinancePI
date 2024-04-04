@@ -41,7 +41,9 @@ public class User implements Serializable , UserDetails {
     @ManyToMany(mappedBy = "userSet")
     @JsonIgnore
     private Set<Event> eventSet;
-    @OneToMany(mappedBy = "user")
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     Set<OfferLoan> offerLoans;
 
     public void setUser_password(String password) {

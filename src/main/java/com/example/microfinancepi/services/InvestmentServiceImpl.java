@@ -90,7 +90,7 @@ public class InvestmentServiceImpl implements InvestmentService {
                           Float interest= (amount_invts/value_inv)*investment.getIncome_by_day()*0.20f;
                           Float income= (amount_invts/value_inv)*investment.getIncome_by_day()*0.05f;
 
-                          transactionService.withdraw(investment.getOwner_id(),interest,transaction.getUser().getId_user(),Type_transaction.INTEREST);
+                          //transactionService.withdraw(investment.getOwner_id(),interest,transaction.getUser().getId_user(),Type_transaction.INTEREST);
                           transactionService.withdraw(investment.getOwner_id(),income,1,Type_transaction.INCOME);
                          User user=  userRepository.findById(investment.getOwner_id()).orElse(null);
                    //       emailSenderService.SendInvestmentInterestEmail("samar.saidana@esprit.tn",user.getEmail_address(),interest,investment.getProject_name());

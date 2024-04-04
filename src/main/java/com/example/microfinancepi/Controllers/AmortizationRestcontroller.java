@@ -2,6 +2,7 @@ package com.example.microfinancepi.Controllers;
 
 import com.example.microfinancepi.entities.Amortization;
 import com.example.microfinancepi.services.IAmortizationService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/amortization")
+@SecurityRequirement(name = "bearerAuth")
 public class AmortizationRestcontroller {
 
     IAmortizationService amortizationService;
@@ -28,13 +30,6 @@ public class AmortizationRestcontroller {
     public Amortization retrieveAmortization (@PathVariable("idAmrt") Long idAmrt) {
         return amortizationService.retrieveAmortization(idAmrt);
     }
-
-// add
-    @PostMapping("/add-amortization")
-    public Amortization addAmortization(@RequestBody Amortization amrt) {
-        return amortizationService.addAmortization(amrt);
-    }
-
 // edit
     @PutMapping("/modify-amortization")
     public Amortization modifyAmortization(@RequestBody Amortization amrt) {
