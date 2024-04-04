@@ -1,0 +1,43 @@
+
+›
+java:S2293±"YReplace the type specification in this constructor call with the diamond operator ("<>").(¥¸¾ÿÿÿÿÿÿJ$16fb51f3-3171-452b-bb49-191573ec506b
+‘	java:S117/"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÂöŞüÿÿÿÿJ$608c521d-526b-4ebc-9f25-af56c394c39c
+‘	java:S1173"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ö÷¡ùüÿÿÿÿJ$744f63c3-e23b-4fb6-86e3-5adac5b74153
+Œ	java:S117;"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(éÇÄ•J$49914068-2ab1-41ca-bbb8-f1dbff214bcb
+Œ	java:S117;"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(éÇÄ•J$167dbf35-4c2b-4d17-ae54-d542305f3187
+’	java:S117°"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ğ«ùÿÿÿÿJ$ba576fcb-650e-4162-9a84-f7d5bca28222
+
+java:S1488Ô"`Immediately return this expression instead of assigning it to the temporary variable "response".(ÚÇàJ$b4da60d8-e02b-4de1-8371-505eb2ac7bce
+•	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ÿŸÌJ$b41ab18b-b8d5-4bec-897c-6c8102f7227f
+„
+java:S2259°"BA "NullPointerException" could be thrown; "user" is nullable here.(ğ«ùÿÿÿÿJ$65c8aeee-1d0d-4ebe-9968-1280f355ed4f
+~
+java:S6813"BRemove this field injection and use constructor injection instead.(êæÄŞJ$4f6e7eb3-119a-42d1-bd86-4947d34a7400
+~
+java:S6813 "BRemove this field injection and use constructor injection instead.(êæÄŞJ$c4fc5ff7-d464-4764-b1e7-9fda9ac1014a
+~
+java:S6813""BRemove this field injection and use constructor injection instead.(êæÄŞJ$955a88d6-6f38-4971-bbe6-23de3258b2d8
+|
+java:S4684&"@Replace this persistent entity with a simple POJO or DTO object.( Ğ®÷J$5f13cdc3-b1f9-4a89-9cba-5bfb496697c2
+	java:S1003"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ö÷¡ùüÿÿÿÿJ$37df7d33-f51b-423d-b754-4004954703b4
+|
+java:S46847"@Replace this persistent entity with a simple POJO or DTO object.(®ø«¤J$1c7d1e9b-df26-4d7a-9ce7-625d5b66c28c
+	java:S100S"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÆñÏšøÿÿÿÿJ$29d6d339-676e-41d0-b195-636dfa2c97bc
+w	java:S125E"<This block of commented-out lines of code should be removed.(ıéëÈJ$8c4f4fa4-53d1-4bd8-a1b2-e1ce56d4a54d
+w	java:S125K"<This block of commented-out lines of code should be removed.(‚ÁõúJ$85f44e1a-1821-4407-8245-c2dfa4439bc6
+x	java:S125“"<This block of commented-out lines of code should be removed.(ÿæ´øJ$8c2f6cee-747b-4755-89f2-bd7123562fb5
+}	java:S125¡"<This block of commented-out lines of code should be removed.(ŠêÀªùÿÿÿÿJ$ccaadcdb-74a9-47b2-891d-abdabddda41d
+{
+java:S1854°"9Remove this useless assignment to local variable "Text1".(ğ«ùÿÿÿÿJ$d86d8c2c-b853-4896-99fc-2b2019c29247
+l
+java:S1481°"*Remove this unused "Text1" local variable.(ğ«ùÿÿÿÿJ$19933a78-564e-443c-b245-dcc5249e7697
+x	java:S125º"<This block of commented-out lines of code should be removed.(ıÑÓîJ$2f371400-35dc-4eea-9114-6932388186ab
+“
+java:S1128
+"WRemove this unused import 'com.example.microfinancepi.services.ShareHolderServiceImpl'.(¯êò£J$9c99ab2d-417b-4041-95a8-705b3b134cd0
+‘
+java:S1128"PRemove this unused import 'org.springframework.scheduling.annotation.Scheduled'.(‚¡®ÜûÿÿÿÿJ$9fe698fe-13b4-4158-9409-d0ac3739ae47
+q
+java:S1128"0Remove this unused import 'java.time.LocalDate'.(›‘¬èıÿÿÿÿJ$fef554b9-232f-472c-8dbf-6eecfe4749ad
+l
+java:S1128"0Remove this unused import 'java.util.ArrayList'.(÷‰îƒJ$ef08c66a-a9d0-47cb-8385-7c834f2e497b

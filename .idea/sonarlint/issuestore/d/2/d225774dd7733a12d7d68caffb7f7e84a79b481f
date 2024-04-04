@@ -1,0 +1,22 @@
+
+f	java:S1177"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(·¨ï¬
+l	java:S117Ü"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¾çˆıøÿÿÿÿ
+g	java:S117å"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÂèĞ
+…
+java:S1488°"iImmediately return this expression instead of assigning it to the temporary variable "indiceRentabilite".(äÙŸ§úÿÿÿÿ
+Œ
+java:S1488÷"uImmediately return this expression instead of assigning it to the temporary variable "percentageWithoutShareholders".(Ÿ¼ú™
+
+java:S1488ş"rImmediately return this expression instead of assigning it to the temporary variable "percentageWithShareholders".(È¤ç™ÿÿÿÿÿ
+Z
+java:S2259‰"CA "NullPointerException" could be thrown; "event" is nullable here.(èÚ˜Ç
+e
+java:S3518°"IMake sure "sommeInvestissement" can't be zero before doing this division.(äÙŸ§úÿÿÿÿ
+M
+java:S3655N"7Call "Optional#isPresent()" before accessing the value.(›Ùö§
+p	java:S116"[Rename this field "Ieventrepository" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ù·İ×
+W	java:S125µ"<This block of commented-out lines of code should be removed.(íËøíüÿÿÿÿ
+O
+java:S1128"9Remove this unused import 'javax.persistence.TypedQuery'.(—Ğİ¦
+S
+java:S1128"8Remove this unused import 'java.util.stream.Collectors'.(Óóº´úÿÿÿÿ

@@ -1,0 +1,7 @@
+
+ò	java:S116"VRename this field "ACCOUNT_SID" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(≥¸òû8¬§í±Í1J$c77c4801-002a-42c2-a2c2-421c49ad8c43
+ó	java:S116"URename this field "AUTH_TOKEN" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(∑çà“8√§í±Í1J$a22e7616-7340-4224-ad8f-1d412092f120
+ô	java:S116"WRename this field "PHONE_NUMBER" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(â‚ÀÆ8√§í±Í1J$9b72f27a-0933-4fda-9528-9af19206c23c
+}
+java:S1128
+":Remove this unused import 'com.twilio.converter.Promoter'.(ô¢ˇ÷8’—ñ±Í1J$6d1e03a6-dc28-4c94-a5b7-60c19431c39c

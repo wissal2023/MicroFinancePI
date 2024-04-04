@@ -1,0 +1,63 @@
+
+•
+java:S2293m"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÇÇÔJ$0440bd21-2537-480b-a417-8cd9cfed4e8d
+•
+java:S2293n"YReplace the type specification in this constructor call with the diamond operator ("<>").(àÇÙ§J$17547091-4646-40b6-b08d-fb1e580f4a59
+•
+java:S2293ˆ"YReplace the type specification in this constructor call with the diamond operator ("<>").(ş“½-J$59cb35e1-da1e-424e-83eb-79a6fdf9b070
+Œ	java:S117'"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(—›¡¨J$b1e48b30-587e-480c-91a7-599927fa86fa
+Œ	java:S117,"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(²ÆŞÇJ$da882ad0-a3b7-4182-b1ed-ffc2a3bb2ffa
+’	java:S117…"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ìˆ³šúÿÿÿÿJ$3ade3b8d-0083-48ce-8bb8-ae40319972b4
+	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ö¿úÁJ$85a9f57c-8a70-4167-8ce9-787e10c73b56
+’	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¯Œ›ÇúÿÿÿÿJ$88394c2b-f105-4fb7-b34b-acf396194200
+	java:S117¨"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÀÍÎÚJ$09e358d3-a3e0-481b-99e3-b5689bdedfcd
+œ
+java:S1488_"`Immediately return this expression instead of assigning it to the temporary variable "response".(ÚÇàJ$32c8fc62-b11e-4bbc-9f47-e2e07d253d09
+™
+java:S1488{"^Immediately return this expression instead of assigning it to the temporary variable "kMeans".(àÄ’sJ$cb467d67-94a2-47ca-aed8-3369d8a4cf7c
+˜
+java:S1488¨"[Immediately return this expression instead of assigning it to the temporary variable "TRI".(ÀÍÎÚJ$9c49d18f-36a1-415c-bf41-fb1090a6929e
+£
+java:S1488É"aImmediately return this expression instead of assigning it to the temporary variable "rendement".(“ü¤§ıÿÿÿÿJ$bf48bbf4-8a95-40d5-a1d6-07021b43ead6
+
+java:S2184¼"BCast one of the operands of this addition operation to a "double".(˜¼£ŠJ$1d22614b-921e-4a57-87ea-af57328502b5
+•	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ÿŸÌJ$fe545216-1930-4623-8f97-f37c37f63e7b
+‹
+java:S2259É"IA "NullPointerException" could be thrown; "shareholder" is nullable here.(“ü¤§ıÿÿÿÿJ$d89d2367-11f1-4b8c-9f26-34b6ee1f19a4
+Š
+java:S2259¤"HA "NullPointerException" could be thrown; "partenaire" is nullable here.(Ö¾šúÿÿÿÿJ$5053a385-5d35-4e7a-b70e-d4868c325f2a
+{
+java:S3518¿"9Make sure "dfx" can't be zero before doing this division.(¬´¦şÿÿÿÿJ$a184a006-b9b9-451c-93d8-fd9f392ceeb5
+œ	java:S116"aRename this field "Ishareholderrepository" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¾ÖúJ$dd187172-376c-47c5-aad3-5f515ece7853
+–	java:S116"[Rename this field "Ieventrepository" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ù·İ×J$599de5ec-4208-4333-b91b-cfcbd64d111e
+o
+java:S6837i"3Remove this superfluous "@ResponseBody" annotation.(Ü¥¼J$37548ef7-14e9-4c9e-a9c7-ab74de588a54
+p
+java:S6837"3Remove this superfluous "@ResponseBody" annotation.(Ü¥¼J$0e8460cf-4b36-4d71-bcd8-d04c3c43d929
+|
+java:S4684"@Replace this persistent entity with a simple POJO or DTO object.(ÂµÔ¦J$0cb9f96c-7a4e-4ffa-94b2-de12ed1d5807
+‰	java:S100,"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(²ÆŞÇJ$1e2e493c-9945-47fc-8f85-e790c39e5ced
+
+java:S46841"@Replace this persistent entity with a simple POJO or DTO object.(®ÇÂùÿÿÿÿJ$3e94f970-437b-455b-81c7-5d24802c96ac
+b
+java:S1452<"&Remove usage of generic wildcard type.(ú±ÊôJ$3c7db25a-fd6a-498a-967a-645127654f2e
+y
+java:S1854G"8Remove this useless assignment to local variable "year".(¡ÎäİúÿÿÿÿJ$b6ff781b-ae9d-422f-815f-4ac5a5fad86f
+j
+java:S1481G")Remove this unused "year" local variable.(¡ÎäİúÿÿÿÿJ$9cddb04e-1226-4ffb-a15b-57e9cc619969
+|
+java:S1854ˆ"@Remove this useless assignment to local variable "listusername".(ş“½-J$5de6a626-5680-4137-959f-85339856629e
+m
+java:S1481ˆ"1Remove this unused "listusername" local variable.(ş“½-J$b85abfa6-9fd9-4fe6-b22a-39a66ab54ccb
+x	java:S125¢"<This block of commented-out lines of code should be removed.(ªî–‡J$3c0ec5ab-c6c4-4ade-b415-11ca309b032d
+|
+java:S1854Ú"?Remove this useless assignment to local variable "shareholder".(÷¼©©J$d9c3ca7d-d535-4d26-8c28-a704084be93c
+}	java:S125Î"<This block of commented-out lines of code should be removed.(²õùÀúÿÿÿÿJ$011a6011-f2ce-465d-bcfa-d7c52b5b4e45
+m
+java:S1481Ú"0Remove this unused "shareholder" local variable.(÷¼©©J$38c35942-7900-4341-9ee9-bd9c949c167e
+Œ
+java:S1128"QRemove this unused import 'com.example.microfinancepi.services.EventServiceImpl'.(¹”Ì/J$15889888-4de8-4664-a50a-51d3292e4028
+–
+java:S1128"URemove this unused import 'org.apache.commons.math3.analysis.solvers.IllinoisSolver'.(ÈñÊ½úÿÿÿÿJ$29706347-0b66-4177-8632-978117c4a828
+˜
+java:S1128"WRemove this unused import 'org.apache.commons.math3.analysis.solvers.UnivariateSolver'.(ÄêïœıÿÿÿÿJ$50061279-1113-430b-af58-4d60ae0c8cb6

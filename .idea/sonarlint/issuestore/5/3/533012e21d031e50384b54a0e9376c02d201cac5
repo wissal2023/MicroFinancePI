@@ -1,0 +1,9 @@
+
+˜
+java:S14880"\Immediately return this expression instead of assigning it to the temporary variable "user".(‚­“ÕJ$ccfd7c7b-c1bd-4e91-bcda-38d51cbfef9d
+s
+java:S36550"7Call "Optional#isPresent()" before accessing the value.(‚­“ÕJ$0c46f6eb-8d0e-4358-b962-035f858cab12
+t
+java:S3655@"3Call "user.isPresent()" before accessing the value.(´ñìšþÿÿÿÿJ$1caf55d4-03e5-489b-b3a0-53ac8e77c245
+p
+java:S2201?"/The return value of "orElseThrow" must be used.(¸¸ìôøÿÿÿÿJ$eaaedb4e-de06-4351-a1dd-fff2c55f7b94

@@ -1,0 +1,15 @@
+
+‘	java:S117-"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(™¿Û‘úÿÿÿÿJ$cb9dff48-5f45-4cf5-8757-ff18ee553987
+‘	java:S117-"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(™¿Û‘úÿÿÿÿJ$e9f7a531-8630-4e4c-9e4e-931514e262da
+˜
+java:S1488e"\Immediately return this expression instead of assigning it to the temporary variable "type".(£ä¦J$41865421-91eb-4ece-8153-90ce91552c5c
+Î
+java:S44491"ŠAnnotate the parameter with @javax.annotation.Nullable in method 'save' declaration, or make sure that null can not be passed as argument.(½€¸¬8Îü‡óé1J$89e93ba9-1df2-4762-8866-80601422dbfe
+¢	java:S116"aRename this field "ItransactionRepository" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¿•í8Ú‡óé1J$c03e318b-ddf1-4b3c-a542-649d6e128dd5
+w	java:S125"<This block of commented-out lines of code should be removed.(Ü§ìJ$ee9070e4-aa5e-40e7-a3f8-d20be3ad5b66
+
+java:S1854/">Remove this useless assignment to local variable "investment".(ÜÑÇÂ8Øö³œç1J$d4b462c0-94ec-4bc9-8b81-c46dd05a6f7b
+r
+java:S1481/"/Remove this unused "investment" local variable.(ÜÑÇÂ8Úö³œç1J$cc2a020c-2ca4-4f35-a580-a6a6d594f609
+~	java:S1250"<This block of commented-out lines of code should be removed.(ùáÌô8Úö³œç1J$79c0fc95-ce94-4a39-a1b5-0cf1ddef2456
+v	java:S125["<This block of commented-out lines of code should be removed.(Ò£ÎIJ$6bdb6b0d-0b5c-49d8-8413-bce8d2478bae

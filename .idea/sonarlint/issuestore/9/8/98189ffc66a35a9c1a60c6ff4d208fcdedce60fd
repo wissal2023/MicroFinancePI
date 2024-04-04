@@ -1,0 +1,9 @@
+
+i	java:S116"TRename this field "id_invest" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‡ôÑİ
+m	java:S116"SRename this field "owner_id" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ˆÚ€ƒùÿÿÿÿ
+q	java:S116"WRename this field "project_name" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(›ö¯úÿÿÿÿ
+j	java:S116"URename this field "amount_inv" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Æ¥ÙÒ
+j	java:S116"URename this field "date_debut" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ãØï
+h	java:S116"SRename this field "date_fin" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û¹Æ†
+q	java:S116"WRename this field "invest_value" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¦–Ñòûÿÿÿÿ
+r	java:S116"XRename this field "income_by_day" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(«”äàøÿÿÿÿ

@@ -1,0 +1,5 @@
+
+t	java:S116"_Rename this field "FirstNameShareholder" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Œî‚è
+e	java:S116"PRename this field "Email" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(áï»‚
+F
+java:S1128	"+Remove this unused import 'java.util.List'.(Õë±Äøÿÿÿÿ

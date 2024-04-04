@@ -1,0 +1,19 @@
+
+f	java:S117&"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ñå‘¼
+f	java:S117+"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(±—Æ¤
+f	java:S1170"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¾ú¢ù
+k	java:S1178"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Æµ«¿ùÿÿÿÿ
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ÿŸÌ
+H
+java:S6856*"2Bind path variable "inv_id" to a method parameter.(™äÆ
+H
+java:S6856/"2Bind path variable "inv_id" to a method parameter.(Æß’ò
+X
+java:S68567"=Bind path variable "calculTotalInvest" to a method parameter.(À‹øÅÿÿÿÿÿ
+h	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(îçîøÿÿÿÿ
+[
+java:S4684"@Replace this persistent entity with a simple POJO or DTO object.(îçîøÿÿÿÿ
+c	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(µ¶ø¤
+h	java:S100""NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÅÅúıÿÿÿÿ
+[
+java:S4684""@Replace this persistent entity with a simple POJO or DTO object.(ÅÅúıÿÿÿÿ

@@ -1,0 +1,14 @@
+
+š	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ÐèéòùÿÿÿÿJ$265deb70-cdc3-42fa-8197-1c64c9a25f19
+~
+java:S6813"BRemove this field injection and use constructor injection instead.(êæÄÞJ$18bae97f-4214-4b45-95ac-08edd1b18dcb
+~
+java:S6813"BRemove this field injection and use constructor injection instead.(êæÄÞJ$39f4ff1c-631f-4944-bf26-e989ca168750
+~
+java:S6813!"BRemove this field injection and use constructor injection instead.(êæÄÞJ$20d44377-b789-4ffc-a1c0-4439cda2824c
+€
+java:S1874"DRemove this use of "WebSecurityConfigurerAdapter"; it is deprecated.(Ë¶Ï“J$cfc8c6d4-24d8-4e67-9932-cadcb85cc60c
+z
+java:S5344(">Don't use the default "PasswordEncoder" relying on plain-text.(Ö˜ÔÚJ$a6562e8a-cbda-4bf5-b36c-b5d4f5621107
+¢
+java:S1128"fRemove this unused import 'org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry'.(ùçšïJ$33592afb-94ea-4e93-b7f3-4f2543e6c72c

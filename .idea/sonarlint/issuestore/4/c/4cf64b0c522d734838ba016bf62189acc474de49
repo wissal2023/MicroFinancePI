@@ -1,0 +1,6 @@
+
+h	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‘›ÁÆÿÿÿÿÿ
+\
+java:S1128"FRemove this unused import 'com.example.microfinancepi.entities.Event'.(ßØÉˆ
+f
+java:S1128"PRemove this unused import 'com.example.microfinancepi.entities.TypeShareholder'.(ó¶“ù

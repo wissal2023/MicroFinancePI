@@ -1,0 +1,14 @@
+
+o
+java:S1121;".Extract the assignment out of this expression.(É­öŞÿÿÿÿÿJ$b05ae1c5-ae5c-4076-888d-d703411a59bd
+	java:S116"RRename this field "id_user" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(†¿úJ$b4fdf2f5-2e00-427a-b3f7-32b67088a2ec
+™	java:S116"YRename this field "user_firstname" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(²¿ÛûÿÿÿÿJ$22b4c965-b3ec-4c10-8343-d6b606f5a74c
+’	java:S116"XRename this field "user_lastname" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ì…¢(J$d14492ff-9723-46e3-88bc-9bec2e28628a
+“	java:S116"XRename this field "user_password" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Åñ­J$4c14a546-04eb-445d-a559-85824bfaf469
+”	java:S116""ZRename this field "profile_picture" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(àõ£sJ$6c7d3858-eca0-4fa4-9231-32bedc967880
+•	java:S116#"URename this field "user_phone" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¹©±ÑüÿÿÿÿJ$8ac5b9fa-8247-4732-bc4f-a9a5b42ac595
+	java:S116$"URename this field "Fn_rapport" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(êÁãçJ$419114a0-8caf-40c5-a753-b5d96e938b58
+•	java:S116&"ZRename this field "Sector_activite" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(°©˜æJ$d8b236c7-d9b2-49eb-98f2-cd3dfb6a3fc7
+o
+java:S1948/"'Make "offerLoans" private or transient.(ùÂ’ûÿÿÿÿ8‰ÿãÈç1J$b10ad351-ea32-4455-804f-afa4ad020670
+	java:S1001"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‚ÃÿËûÿÿÿÿJ$a3374840-5dc3-41b3-be21-04bfdda49461
