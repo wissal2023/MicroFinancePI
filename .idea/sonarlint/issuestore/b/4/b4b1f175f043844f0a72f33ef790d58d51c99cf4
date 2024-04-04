@@ -1,0 +1,8 @@
+
+_
+java:S2094"BRemove this empty class, write its code or make it an "interface".(ß®Èñ8¤ƒ“²ê1
+]	java:S125	"<This block of commented-out lines of code should be removed.(ñ—îÿüÿÿÿÿ8¦ƒ“²ê1
+c
+java:S1128"FRemove this unused import 'org.junit.experimental.theories.DataPoint'.(Ä·Ê8¨ƒ“²ê1
+M
+java:S1128"+Remove this unused import 'java.util.List'.(Õë±Äøÿÿÿÿ8¨ƒ“²ê1

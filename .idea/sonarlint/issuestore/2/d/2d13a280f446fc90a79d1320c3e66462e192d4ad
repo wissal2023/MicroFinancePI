@@ -1,0 +1,14 @@
+
+ˆ	java:S1127"FDefine and throw a dedicated exception instead of using a generic one.(¾Ã‡›8ª¾¥¡ê1J$7079f62a-0ca5-4435-ad57-5a2ab008121c
+œ	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ÿŸÌ8¯¾¥¡ê1J$4cc05890-2429-4e41-b485-74ae5cf0bda4
+Ä
+java:S11867"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(¾Ã‡›8Å¾¥¡ê1J$1697a581-be64-4e4f-bc6e-205c44fef201
+…
+java:S6813"BRemove this field injection and use constructor injection instead.(êæÄŞ8Ç¾¥¡ê1J$700d40bd-709d-4b8f-a791-3fa7782208fb
+‚
+java:S4684""@Replace this persistent entity with a simple POJO or DTO object.(ÍÂßG8Ò¾¥¡ê1J$8654c5e8-99c3-4853-be26-47a2479f3c6a
+‚
+java:S4684-"@Replace this persistent entity with a simple POJO or DTO object.(øÕÂd8Ô¾¥¡ê1J$67d0c012-9b85-480e-a18a-aae7fd3ea57f
+h
+java:S14529"&Remove usage of generic wildcard type.(ğñ 38×¾¥¡ê1J$42dcdc00-006d-43fc-8dc5-96dfd1874b73
+~	java:S125V"<This block of commented-out lines of code should be removed.(€ ™¤8İ¾¥¡ê1J$cec2c090-4df2-44b7-bcbe-e228c10c4abd

@@ -1,0 +1,11 @@
+
+…
+java:S6813"BRemove this field injection and use constructor injection instead.(êæÄŞ8‰¦Ùİé1J$b0df302c-6e80-41a0-a54d-143363c2e49e
+v
+java:S1874.".Remove this use of "parser"; it is deprecated.(¨‚à˜úÿÿÿÿ8Ø¯Ûİé1J$3d721149-710e-4f33-b457-145ad45ed34c
+}
+java:S1874."5Remove this use of "setSigningKey"; it is deprecated.(¨‚à˜úÿÿÿÿ8Ø¯Ûİé1J$3a0b6f2b-ecc1-406c-a400-0652881c03a2
+s
+java:S1874@"0Remove this use of "signWith"; it is deprecated.(Áãşÿ8¦Ùİé1J$d0f28b61-c906-49ac-981c-880510c5d974
+¥
+java:S1128"]Remove this unused import 'com.example.microfinancepi.security.SecurityConstants.SECRET_KEY'.(™¦«ñúÿÿÿÿ8åüÛİé1J$a9b9678a-6c66-45f5-865a-3f50de73580b

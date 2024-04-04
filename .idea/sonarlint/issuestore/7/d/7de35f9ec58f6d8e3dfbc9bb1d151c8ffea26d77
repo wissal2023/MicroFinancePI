@@ -1,0 +1,12 @@
+
+¯
+java:S1488"gImmediately return this expression instead of assigning it to the temporary variable "listInvestments".(—Ùîéûÿÿÿÿ8š¨š¯ê1J$54f5ca03-05d3-4b61-9ca8-2c5cced42131
+ª
+java:S1488!"bImmediately return this expression instead of assigning it to the temporary variable "investment".(šÿíÇşÿÿÿÿ8›¨š¯ê1J$6302d7a3-48d9-4925-8f6d-87f7210f1ada
+œ	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ÿŸÌ8¨š¯ê1J$c18ae8b0-1bcd-4847-b5c2-b5734a3b7be8
+ƒ	java:S125%"<This block of commented-out lines of code should be removed.(îçîøÿÿÿÿ8ª¨š¯ê1J$4d070496-cfa0-42b8-9566-332b84a915ee
+ƒ	java:S125("<This block of commented-out lines of code should be removed.(ÂÛ¯÷ùÿÿÿÿ8ª¨š¯ê1J$f05d4458-fe81-42f8-b6c5-d40ffd3c817f
+ˆ
+java:S4684A"@Replace this persistent entity with a simple POJO or DTO object.(ùªÒâÿÿÿÿÿ8­¨š¯ê1J$f0515941-1dc6-4e6d-8bb0-08b932a2bb3e
+~	java:S125/"<This block of commented-out lines of code should be removed.(Ã¾‚¥8¶³¯ê1J$fd6d8ea6-f1cb-40b5-8759-01e2f1fa444f
+ƒ	java:S1257"<This block of commented-out lines of code should be removed.(¬÷ç·ıÿÿÿÿ8­¨š¯ê1J$9ae59191-88fe-4f78-954c-312a9928e61e

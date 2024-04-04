@@ -1,0 +1,18 @@
+
+P
+java:S1121;".Extract the assignment out of this expression.(É­öŞÿÿÿÿÿ8 ‚§ßé1
+n	java:S116"RRename this field "id_user" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(†¿ú8«‚§ßé1
+z	java:S116"YRename this field "user_firstname" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(²¿Ûûÿÿÿÿ8«‚§ßé1
+s	java:S116"XRename this field "user_lastname" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ì…¢(8«‚§ßé1
+t	java:S116"XRename this field "user_password" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Åñ­8«‚§ßé1
+u	java:S116"ZRename this field "profile_picture" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(àõ£s8«‚§ßé1
+v	java:S116 "URename this field "user_phone" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¹©±Ñüÿÿÿÿ8«‚§ßé1
+q	java:S116!"URename this field "Fn_rapport" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(êÁãç8«‚§ßé1
+v	java:S116#"ZRename this field "Sector_activite" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(°©˜æ8«‚§ßé1
+I
+java:S1948*"'Make "offerLoans" private or transient.(ùÂ’ûÿÿÿÿ8°‚§ßé1
+D
+java:S1948-"'Make "investment" private or transient.(–óªü8±‚§ßé1
+F
+java:S19480")Make "project" transient or serializable.(¿‚ÿõ8±‚§ßé1
+o	java:S1001"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‚ÃÿËûÿÿÿÿ8·‚§ßé1

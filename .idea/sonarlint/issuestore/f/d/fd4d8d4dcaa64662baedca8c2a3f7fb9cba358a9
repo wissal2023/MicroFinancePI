@@ -1,0 +1,30 @@
+
+m	java:S117w"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÔÕõä8Éê½´ê1
+§
+java:S14881"dImmediately return this expression instead of assigning it to the temporary variable "listProjects".(ğ§¹ô8•ã–³ê1J$949d051b-7c34-4cd5-8c62-cb9d3c1a78ae
+§
+java:S14888"_Immediately return this expression instead of assigning it to the temporary variable "project".(Å‰’³úÿÿÿÿ8•ã–³ê1J$908031e0-a6f2-4423-b316-628893516791
+§
+java:S1488Y"_Immediately return this expression instead of assigning it to the temporary variable "project".(ä¾Ğˆùÿÿÿÿ8•ã–³ê1J$b82bb095-8e92-404d-bb3d-412b83fe35a2
+œ	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ÿŸÌ8ÿ¼æ²ê1J$b8701f35-9793-4b07-9baf-98f68b888efc
+ƒ
+java:S4684="@Replace this persistent entity with a simple POJO or DTO object.(ÁÒÅ8©ã–³ê1J$e3275531-fcc0-4861-bdfb-e202bd8a801c
+~	java:S125@"<This block of commented-out lines of code should be removed.(­Ñú8ªã–³ê1J$07f65524-32c8-4b8a-969b-34dc46d4afa6
+ƒ	java:S125I"<This block of commented-out lines of code should be removed.(ÿ—ÀÏúÿÿÿÿ8ªã–³ê1J$f7550b62-a28d-41b3-80d5-dbce1b67f479
+ƒ	java:S125M"<This block of commented-out lines of code should be removed.(­ä©ÿÿÿÿÿ8ªã–³ê1J$c9c97e63-4b41-412d-a793-3fd08d1d4f17
+ˆ
+java:S4684X"@Replace this persistent entity with a simple POJO or DTO object.(ÿ‹ëĞıÿÿÿÿ8«ã–³ê1J$5e5b5f37-ef41-4e4c-95f2-8ee047e89c67
+‚
+java:S1854`"?Remove this useless assignment to local variable "currentUser".(ÊĞ³—8¬ã–³ê1J$8f7a1bdb-1b42-42a5-914b-7c28f545de32
+ƒ
+java:S4684^"@Replace this persistent entity with a simple POJO or DTO object.(²İÒÂ8­ã–³ê1J$311e417a-7a5b-46c9-9e37-32d6155d8138
+s
+java:S1481`"0Remove this unused "currentUser" local variable.(ÊĞ³—8®ã–³ê1J$3ddd7c69-a503-4362-8297-11506c4b1e9b
+‚
+java:S1854k"?Remove this useless assignment to local variable "currentUser".(ÊĞ³—8¯ã–³ê1J$9926f293-9d13-4352-bbc4-b2e88d28524f
+s
+java:S1481k"0Remove this unused "currentUser" local variable.(ÊĞ³—8¯ã–³ê1J$0b259525-f494-4ff6-b05f-23e67804e9ef
+G	java:S106ƒ"+Replace this use of System.out by a logger.(•²j8îê½´ê1
+H	java:S106„"+Replace this use of System.out by a logger.(«–¨†8ïê½´ê1
+z
+java:S1144d"7Remove this unused private "getCurrentUserRole" method.(ßëõö8ÁôŞ³ê1J$eff886c7-f5d1-4855-8826-b8660d5da754

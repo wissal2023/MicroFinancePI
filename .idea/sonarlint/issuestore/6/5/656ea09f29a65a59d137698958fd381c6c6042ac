@@ -1,0 +1,11 @@
+
+v	java:S116""URename this field "amount_inv" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Œ¤ã­üÿÿÿÿ8£‚Ã­ê1
+s	java:S116%"WRename this field "invest_value" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(’Œü¹8£‚Ã­ê1
+„	java:S116'"cRename this field "total_raising_investment" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¶ûØïÿÿÿÿÿ8£‚Ã­ê1
+z	java:S116("YRename this field "total_interest" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‘×‰šùÿÿÿÿ8£‚Ã­ê1
+v	java:S116+"URename this field "date_debut" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ãØ¾×ÿÿÿÿÿ8£‚Ã­ê1
+o	java:S116-"SRename this field "date_fin" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¶›–ç8£‚Ã­ê1
+u	java:S116."YRename this field "Status_project" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ˆƒÀ™8£‚Ã­ê1
+s	java:S116/"XRename this field "Status_Invest" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ú¯ËF8¤‚Ã­ê1
+{	java:S1160"ZRename this field "CategoryProject" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÄüÓžúÿÿÿÿ8¤‚Ã­ê1
+s	java:S1162"WRename this field "Businessplan" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(äÃÊí8¤‚Ã­ê1

@@ -1,0 +1,26 @@
+
+”	java:S117ó"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(äÚœ8¹ùÚ³ê1J$c371ab91-f76c-4fd0-92d4-17618b63e189
+ª
+java:S1488Ö"fImmediately return this expression instead of assigning it to the temporary variable "updatedProject".(˜è£8ÕÒ³ê1J$80862b9a-e3ff-41c3-80ac-f61037627aa8
+ƒ
+java:S1488–"`Immediately return this expression instead of assigning it to the temporary variable "projects".(ÅìÇ«ÿÿÿÿÿ8ùÇ´ê1
+h
+java:S1640£"Convert this Map to an EnumMap.(©üİÏûÿÿÿÿ8ØÒ³ê1J$5a4c42de-4322-429f-876c-f4ecf95c0193
+z
+java:S3655="7Call "Optional#isPresent()" before accessing the value.(ÓëÀÈ8‡·ê³ê1J$3d8d3224-6979-48b3-9b3f-51a4b299981e
+~	java:S125|"<This block of commented-out lines of code should be removed.(ÇÉ®ˆ8üÒ³ê1J$9774fb79-cb42-4d61-ab3c-5d29f5fb797a
+	java:S125„"<This block of commented-out lines of code should be removed.(”Í¡Ï8ıÒ³ê1J$658a6c1a-3d22-4104-8220-6c09a8bb4910
+	java:S125š"<This block of commented-out lines of code should be removed.(Ï’÷ò8ıÒ³ê1J$b9e25e07-44fb-41e0-a748-e52751ea0485
+„	java:S125ğ"<This block of commented-out lines of code should be removed.(ŸÁ¿ûÿÿÿÿ8äùÚ³ê1J$77a505e5-19c3-4810-b60e-62b0dea330b9
+m	java:S106ÿ"+Replace this use of System.out by a logger.(•²j8æùÚ³ê1J$c4b990bd-4c4f-4ec5-bae4-6e93624be391
+n	java:S106€"+Replace this use of System.out by a logger.(«–¨†8æùÚ³ê1J$79fbf9e0-4971-4a93-874b-346a03546f8f
+Œ
+java:S1128"DRemove this unused import 'org.springframework.http.ResponseEntity'.(¶¯ø¦úÿÿÿÿ8¯¦ƒ´ê1J$e8e4dda1-4ad9-446c-b104-1f6e4bf6a96d
+
+java:S1128"URemove this unused import 'org.springframework.security.access.prepost.PreAuthorize'.(ˆ†×ùÿÿÿÿ8¯¦ƒ´ê1J$eaacec42-6250-4c8e-a47a-59f66a4dae09
+š
+java:S1128"RRemove this unused import 'org.springframework.web.bind.annotation.DeleteMapping'.(­ìÎªşÿÿÿÿ8¯¦ƒ´ê1J$f0c43e65-12d5-4359-b4fb-ef0e8804a933
+—
+java:S1128"ORemove this unused import 'org.springframework.web.bind.annotation.PutMapping'.(›¥÷ˆûÿÿÿÿ8¯¦ƒ´ê1J$f5a48cbc-0d13-483c-a3a6-92cf1f8a66ce
+™
+java:S1128"QRemove this unused import 'org.springframework.web.bind.annotation.RequestParam'.(Â¬À·ùÿÿÿÿ8¯¦ƒ´ê1J$3b283d27-e6fb-41d2-9281-9165f5e359e7
